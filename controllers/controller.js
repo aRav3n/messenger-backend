@@ -7,10 +7,9 @@ const security = require("./security");
 
 const pwError = "Password must be between 6 and 16 characters";
 const pwMatchError = "Passwords must match";
-const validateUser = [
-  body("name").trim(),
-  body("email").trim().isEmail().withMessage(emailErr),
-  body("password").trim().isLength({ min: 6, max: 16 }).withMessage(pwError),
+const validateUser = [body("name").trim(), body("password").trim()];
+const validateUserCreation = [
+  body("password").isLength({ min: 6, max: 16 }).withMessage(pwError),
   body("confirmPassword")
     .exists()
     .custom((value, { req }) => {
@@ -21,16 +20,15 @@ const validateUser = [
     })
     .withMessage(pwMatchError)
     .trim(),
-  body("creatorPassword").trim(),
 ];
 
 const createUser = [
   validateUser,
+  validateUserCreation,
   async (req, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        console.log(errors);
         return res.status(422).json({ errors: errors.array() });
       }
 
@@ -46,28 +44,68 @@ const createUser = [
         const hash = bcrypt.hashSync(password, salt);
 
         const user = await db.addUser(name, hash);
-        const token = security.sign(user);
 
-        // for test purposes only
-        console.log({ user, token });
-
-        return res.status(201).json({ user, token });
+        return res.status(200).json(user);
       }
       return res
         .status(409)
         .json({ errors: ["a user with this name already exists"] });
     } catch (err) {
       console.error(err);
-
-      if (err.name === "JsonWebTokenError") {
-        return res.status(500).json({ errors: ["Token generation failed"] });
-      }
-
       return res.status(500).json({ errors: ["Server error"] });
     }
   },
 ];
 
+const deleteUser = [
+  validateUser,
+  async (req, res) => {
+    try {
+      const userInfo = await security.gerUserData(req);
+      if (!userInfo) {
+        return;
+      }
+
+      const id = Number(req.params.userId);
+      if (id !== userInfo.id) {
+        return res.status(404).json({
+          message: "You're not only able to delete your own account!",
+        });
+      }
+
+      const deletedUser = await db.deleteUser(id);
+
+      return res.status(200).json(deletedUser);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error" });
+    }
+  },
+];
+
+const logUserIn = [
+  validateUser,
+  async (req, res) => {
+    const password = req.body.password;
+    const name = req.body.name;
+    const dbUser = await db.listUserByName(name);
+    if (!dbUser) {
+      return res
+        .status(404)
+        .json({ message: `No user with the name ${name} was found` });
+    }
+    const hash = dbUser.hash;
+    const passwordIsValid = bcrypt.compareSync(password, hash);
+    if (!passwordIsValid) {
+      return res.status(401).json({ message: "That password is not valid" });
+    }
+    const token = await security.sign(dbUser);
+    return res.status(200).json({ token });
+  },
+];
+
 module.exports = {
   createUser,
+  deleteUser,
+  logUserIn,
 };

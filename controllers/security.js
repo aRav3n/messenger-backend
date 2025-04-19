@@ -14,14 +14,7 @@ function getTokenFromReq(req) {
   return null;
 }
 
-async function getAuthData(req) {
-  let token = null;
-  if (req.token) {
-    token = req.token;
-  } else {
-    token = getTokenFromReq(req);
-  }
-
+async function listUserDataFromToken(token) {
   if (token) {
     return new Promise((resolve, reject) => {
       jwt.verify(token, secretKey, (err, authData) => {
@@ -37,13 +30,24 @@ async function getAuthData(req) {
   }
 }
 
+async function getAuthData(req) {
+  let token = null;
+  if (req.token) {
+    token = req.token;
+  } else {
+    token = getTokenFromReq(req);
+  }
+
+  const authData = await listUserDataFromToken(token);
+  return authData;
+}
+
 async function gerUserData(req) {
   const authData = await getAuthData(req);
   if (authData) {
     const user = authData.user;
     user.iat = authData.iat;
-    const { hash, ...objectToReturn } = user;
-    return objectToReturn;
+    return user;
   }
   return null;
 }
@@ -64,12 +68,10 @@ function verify(req, res, next) {
   if (token) {
     req.token = token;
   } else {
-    res
-      .sendStatus(403)
-      .json({ message: ["you have to be logged in to do that"] });
+    res.status(403).json({ message: "you have to be logged in to do that" });
   }
 
   next();
 }
 
-module.exports = { gerUserData, sign, verify };
+module.exports = { gerUserData, listUserDataFromToken, sign, verify };
