@@ -123,6 +123,12 @@ exports.Prisma.UserScalarFieldEnum = {
   hash: 'hash'
 };
 
+exports.Prisma.FriendshipScalarFieldEnum = {
+  id: 'id',
+  userAId: 'userAId',
+  userBId: 'userBId'
+};
+
 exports.Prisma.MessageScalarFieldEnum = {
   id: 'id',
   senderId: 'senderId',
@@ -148,6 +154,7 @@ exports.Prisma.QueryMode = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Friendship: 'Friendship',
   Message: 'Message',
   Thread: 'Thread'
 };

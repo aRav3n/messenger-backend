@@ -8,10 +8,11 @@ router.post("/user/signup", controller.createUser);
 router.post("/user/login", controller.logUserIn);
 router.delete("/user/:userId/delete", security.verify, controller.deleteUser);
 
-//router.get("/friend/:userId/", controller.listFriends);
-/*
-router.post("/friend/:userId/add", controller.createFriend);
+router.post("/friend", security.verify, controller.createFriend);
+router.get("/friend/:userName", controller.listFriends);
+router.delete("/friend", security.verify, controller.deleteFriend);
 
+/*
 router.get("/message/:userId/:messageId", controller.listSingleMessage);
 router.post("/message/:userId/thread/:threadId", controller.createMessage);
 

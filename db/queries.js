@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.addUser = addUser;
 exports.deleteUser = deleteUser;
 exports.listUserByName = listUserByName;
+exports.addFriend = addFriend;
+exports.deleteFriend = deleteFriend;
+exports.listFriendsByUserName = listFriendsByUserName;
 const prisma_1 = require("../generated/prisma");
 const extension_accelerate_1 = require("@prisma/extension-accelerate");
 require("dotenv");
@@ -27,6 +30,7 @@ const prisma = new prisma_1.PrismaClient({
         },
     },
 }).$extends((0, extension_accelerate_1.withAccelerate)()); // need to fix this line after Emmet paste to put the money sign in front of extends
+// user queries
 function addUser(name, hash) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = yield prisma.user.create({
@@ -63,5 +67,70 @@ function listUserByName(name) {
             where: { name },
         });
         return userList;
+    });
+}
+// friend queries
+function addFriend(id, friendId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const userAId = Math.min(id, friendId);
+        const userBId = Math.max(id, friendId);
+        try {
+            const newFriendship = yield prisma.friendship.create({
+                data: {
+                    userAId,
+                    userBId,
+                },
+            });
+            return newFriendship;
+        }
+        catch (error) {
+            if (error &&
+                typeof error === "object" &&
+                "code" in error &&
+                error.code === "P2002") {
+                return false;
+            }
+            console.error("Error adding friend:", error);
+            throw error;
+        }
+    });
+}
+function deleteFriend(friendName, userName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.$queryRaw `
+    WITH user_ids AS (
+      SELECT 
+        (SELECT id FROM "User" WHERE name = ${userName}) AS user_id,
+        (SELECT id FROM "User" WHERE name = ${friendName}) AS friend_id
+    )
+    DELETE FROM "Friendship"
+    WHERE 
+      ("userAId" = (SELECT user_id FROM user_ids) AND "userBId" = (SELECT friend_id FROM user_ids))
+      OR
+      ("userAId" = (SELECT friend_id FROM user_ids) AND "userBId" = (SELECT user_id FROM user_ids))
+    RETURNING *;
+  `;
+    });
+}
+function listFriendsByUserName(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.$queryRaw `
+    WITH target_user AS (
+      SELECT id FROM "User" WHERE name = ${name}
+    ),
+    friend_ids AS (
+      SELECT "userAId" AS friend_id 
+      FROM "Friendship" 
+      WHERE "userBId" = (SELECT id FROM target_user)
+      UNION
+      SELECT "userBId" AS friend_id 
+      FROM "Friendship" 
+      WHERE "userAId" = (SELECT id FROM target_user)
+    )
+    SELECT name 
+    FROM "User" 
+    WHERE id IN (SELECT friend_id FROM friend_ids)
+    ORDER BY name ASC
+  `;
     });
 }

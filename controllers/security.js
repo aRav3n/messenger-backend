@@ -67,11 +67,12 @@ function verify(req, res, next) {
   const token = getTokenFromReq(req);
   if (token) {
     req.token = token;
+    next();
   } else {
-    res.status(403).json({ message: "you have to be logged in to do that" });
+    return res
+      .status(403)
+      .json({ message: "you have to be logged in to do that" });
   }
-
-  next();
 }
 
 module.exports = { gerUserData, listUserDataFromToken, sign, verify };

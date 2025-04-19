@@ -15,14 +15,24 @@ datasource db {
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
+  id               Int          @id @default(autoincrement())
   name             String
   hash             String
-  friends          User[]    @relation("friends")
-  friendOf         User[]    @relation("friends")
-  sentMessages     Message[] @relation("SentMessages")
-  receivedMessages Message[] @relation("ReceivedMessages")
+  friendshipsA     Friendship[] @relation("FriendshipA")
+  friendshipsB     Friendship[] @relation("FriendshipB")
+  sentMessages     Message[]    @relation("SentMessages")
+  receivedMessages Message[]    @relation("ReceivedMessages")
   Thread           Thread[]
+}
+
+model Friendship {
+  id      Int  @id @default(autoincrement())
+  userA   User @relation("FriendshipA", fields: [userAId], references: [id])
+  userAId Int
+  userB   User @relation("FriendshipB", fields: [userBId], references: [id])
+  userBId Int
+
+  @@unique([userAId, userBId])
 }
 
 model Message {
