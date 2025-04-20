@@ -21,18 +21,8 @@ async function checkIfMessageExists(req, res, next) {
   next();
 }
 
-async function checkIfThreadExists(req, res, next) {
-  const id = Number(req.params.threadId);
-  const count = await db.countThread(id);
-  if (count === 0) {
-    return res.status(404).json({ message: "that thread wasn't found" });
-  }
-  next();
-}
-
 module.exports = {
   checkIfFriendExists,
   checkIfMessageExists,
-  checkIfThreadExists,
   verify,
 };

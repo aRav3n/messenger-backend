@@ -64,8 +64,8 @@ afterAll(async () => {
   await deleteUser(secondFriend);
 });
 
-// test creating new message and starting a thread
-test("Create new message & thread fails when not signed in", (done) => {
+// test creating a message on an existing friendship
+test("Create message on a friendship fails when not signed in", (done) => {
   request(app)
     .post(`/message/${wrongId}`)
     .expect(401)
@@ -73,7 +73,7 @@ test("Create new message & thread fails when not signed in", (done) => {
     .expect({ message: "you have to be logged in to do that" }, done);
 });
 
-test("Create new message & thread fails when token has been altered", (done) => {
+test("Create message on a friendship fails when token has been altered", (done) => {
   request(app)
     .post(`/message/${wrongId}`)
     .set("Authorization", `Bearer ${badToken}`)
@@ -85,7 +85,7 @@ test("Create new message & thread fails when token has been altered", (done) => 
     );
 });
 
-test("Create new message & thread fails when friend doesn't exist", (done) => {
+test("Create message on a friendship fails when friendship doesn't exist", (done) => {
   request(app)
     .post(`/message/${wrongId}`)
     .set("Authorization", `Bearer ${firstFriend.token}`)
@@ -94,22 +94,10 @@ test("Create new message & thread fails when friend doesn't exist", (done) => {
     .expect({ message: "that friend wasn't found" }, done);
 });
 
-test("Create new message & thread returns the message object", async () => {
-  const newMessage = await request(app)
-    .post(`/message/${wrongId}`)
-    .set("Authorization", `Bearer ${firstFriend.token}`)
-    .type("form")
-    .send(message)
-    .expect(200)
-    .expect("Content-Type", /json/);
-
-  console.log(message);
-});
-
-// test list an existing single message
+// test list an existing friendship
 test("List message fails when not signed in", (done) => {
   request(app)
-    .get(`/message/${wrongId}`)
+    .get(`/message/friend/${wrongId}`)
     .expect(401)
     .expect("Content-Type", /json/)
     .expect({ message: "you have to be logged in to do that" }, done);
@@ -117,7 +105,7 @@ test("List message fails when not signed in", (done) => {
 
 test("List message fails when token has been altered", (done) => {
   request(app)
-    .get(`/message/${wrongId}`)
+    .get(`/message/friend/${wrongId}`)
     .set("Authorization", `Bearer ${badToken}`)
     .expect(403)
     .expect("Content-Type", /json/)
@@ -127,73 +115,13 @@ test("List message fails when token has been altered", (done) => {
     );
 });
 
-test("List message fails when message doesn't exist", (done) => {
+test("List message fails when friendship doesn't exist", (done) => {
   request(app)
-    .get(`/message/${wrongId}`)
+    .get(`/message/friend/${wrongId}`)
     .set("Authorization", `Bearer ${firstFriend.token}`)
     .expect(404)
     .expect("Content-Type", /json/)
-    .expect({ message: "that message wasn't found" }, done);
-});
-
-// test creating a message on an existing thread
-test("Create message on a thread fails when not signed in", (done) => {
-  request(app)
-    .post(`/message/thread/${wrongId}`)
-    .expect(401)
-    .expect("Content-Type", /json/)
-    .expect({ message: "you have to be logged in to do that" }, done);
-});
-
-test("Create message fails when token has been altered", (done) => {
-  request(app)
-    .post(`/message/thread/${wrongId}`)
-    .set("Authorization", `Bearer ${badToken}`)
-    .expect(403)
-    .expect("Content-Type", /json/)
-    .expect(
-      { message: "there was an error with your login, please sign in again" },
-      done
-    );
-});
-
-test("Create message on a thread fails when thread doesn't exist", (done) => {
-  request(app)
-    .post(`/message/thread/${wrongId}`)
-    .set("Authorization", `Bearer ${firstFriend.token}`)
-    .expect(404)
-    .expect("Content-Type", /json/)
-    .expect({ message: "that thread wasn't found" }, done);
-});
-
-// test list an existing message thread
-test("List message fails when not signed in", (done) => {
-  request(app)
-    .get(`/message/thread/${wrongId}`)
-    .expect(401)
-    .expect("Content-Type", /json/)
-    .expect({ message: "you have to be logged in to do that" }, done);
-});
-
-test("List message fails when token has been altered", (done) => {
-  request(app)
-    .get(`/message/thread/${wrongId}`)
-    .set("Authorization", `Bearer ${badToken}`)
-    .expect(403)
-    .expect("Content-Type", /json/)
-    .expect(
-      { message: "there was an error with your login, please sign in again" },
-      done
-    );
-});
-
-test("List message fails when message doesn't exist", (done) => {
-  request(app)
-    .get(`/message/thread/${wrongId}`)
-    .set("Authorization", `Bearer ${firstFriend.token}`)
-    .expect(404)
-    .expect("Content-Type", /json/)
-    .expect({ message: "that thread wasn't found" }, done);
+    .expect({ message: "that friend wasn't found" }, done);
 });
 
 // test delete an existing message
@@ -209,7 +137,6 @@ test("Delete message fails when not signed in", (done) => {
 
 test("Delete message fails when token has been altered", (done) => {
   const token = firstFriend.token.slice(0, -1);
-
   request(app)
     .delete(`/message/${wrongId}`)
     .set("Authorization", `Bearer ${badToken}`)
@@ -232,42 +159,4 @@ test("Delete message fails when message doesn't exist", (done) => {
     .expect(404)
     .expect("Content-Type", /json/)
     .expect({ message: "that message wasn't found" }, done);
-});
-
-// test deleting a message thread
-test("Delete thread fails when not signed in", (done) => {
-  request(app)
-    .delete(`/message/thread/${wrongId}`)
-    .type("form")
-    .send(message)
-    .expect(401)
-    .expect("Content-Type", /json/)
-    .expect({ message: "you have to be logged in to do that" }, done);
-});
-
-test("Delete thread fails when token has been altered", (done) => {
-  const token = firstFriend.token.slice(0, -1);
-
-  request(app)
-    .delete(`/message/thread/${wrongId}`)
-    .set("Authorization", `Bearer ${badToken}`)
-    .type("form")
-    .send(message)
-    .expect(403)
-    .expect("Content-Type", /json/)
-    .expect(
-      { message: "there was an error with your login, please sign in again" },
-      done
-    );
-});
-
-test("Delete thread fails when thread doesn't exist", (done) => {
-  request(app)
-    .delete(`/message/thread/${wrongId}`)
-    .set("Authorization", `Bearer ${firstFriend.token}`)
-    .type("form")
-    .send(message)
-    .expect(404)
-    .expect("Content-Type", /json/)
-    .expect({ message: "that thread wasn't found" }, done);
 });
