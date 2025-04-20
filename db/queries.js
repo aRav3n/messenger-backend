@@ -13,8 +13,11 @@ exports.addUser = addUser;
 exports.deleteUser = deleteUser;
 exports.listUserByName = listUserByName;
 exports.addFriend = addFriend;
+exports.countFriends = countFriends;
 exports.deleteFriend = deleteFriend;
 exports.listFriendsByUserName = listFriendsByUserName;
+exports.countMessages = countMessages;
+exports.countThread = countThread;
 const prisma_1 = require("../generated/prisma");
 const extension_accelerate_1 = require("@prisma/extension-accelerate");
 require("dotenv");
@@ -54,6 +57,12 @@ function deleteUser(id) {
         yield prisma.thread.deleteMany({
             where: { userId: id },
         });
+        // delete user's friendships
+        yield prisma.friendship.deleteMany({
+            where: {
+                OR: [{ userAId: id }, { userBId: id }],
+            },
+        });
         // finally delete the user's account
         const deletedUser = yield prisma.user.delete({
             where: { id },
@@ -70,16 +79,17 @@ function listUserByName(name) {
     });
 }
 // friend queries
-function addFriend(id, friendId) {
+function getUserAAndUserB(userId, friendId) {
+    const userAId = Math.min(userId, friendId);
+    const userBId = Math.max(userId, friendId);
+    return { userAId, userBId };
+}
+function addFriend(userId, friendId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const userAId = Math.min(id, friendId);
-        const userBId = Math.max(id, friendId);
+        const ids = getUserAAndUserB(userId, friendId);
         try {
             const newFriendship = yield prisma.friendship.create({
-                data: {
-                    userAId,
-                    userBId,
-                },
+                data: ids,
             });
             return newFriendship;
         }
@@ -93,6 +103,15 @@ function addFriend(id, friendId) {
             console.error("Error adding friend:", error);
             throw error;
         }
+    });
+}
+function countFriends(userId, friendId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const ids = getUserAAndUserB(userId, friendId);
+        const count = yield prisma.friendship.count({
+            where: ids,
+        });
+        return count;
     });
 }
 function deleteFriend(friendName, userName) {
@@ -132,5 +151,22 @@ function listFriendsByUserName(name) {
     WHERE id IN (SELECT friend_id FROM friend_ids)
     ORDER BY name ASC
   `;
+    });
+}
+// message queries
+function countMessages(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const count = yield prisma.message.count({
+            where: { id },
+        });
+        return count;
+    });
+}
+function countThread(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const count = yield prisma.message.count({
+            where: { id },
+        });
+        return count;
     });
 }

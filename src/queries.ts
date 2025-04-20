@@ -17,6 +17,13 @@ const prisma = new PrismaClient({
   },
 }).$extends(withAccelerate()); // need to fix this line after Emmet paste to put the money sign in front of extends
 
+// internal use functions
+function getUserAAndUserB(userId: number, friendId: number) {
+  const userAId = Math.min(userId, friendId);
+  const userBId = Math.max(userId, friendId);
+  return { userAId, userBId };
+}
+
 // user queries
 async function addUser(name: string, hash: string) {
   const user = await prisma.user.create({
@@ -42,6 +49,13 @@ async function deleteUser(id: number) {
     where: { userId: id },
   });
 
+  // delete user's friendships
+  await prisma.friendship.deleteMany({
+    where: {
+      OR: [{ userAId: id }, { userBId: id }],
+    },
+  });
+
   // finally delete the user's account
   const deletedUser = await prisma.user.delete({
     where: { id },
@@ -59,16 +73,11 @@ async function listUserByName(name: string) {
 }
 
 // friend queries
-async function addFriend(id: number, friendId: number) {
-  const userAId = Math.min(id, friendId);
-  const userBId = Math.max(id, friendId);
-
+async function addFriend(userId: number, friendId: number) {
+  const ids = getUserAAndUserB(userId, friendId);
   try {
     const newFriendship = await prisma.friendship.create({
-      data: {
-        userAId,
-        userBId,
-      },
+      data: ids,
     });
     return newFriendship;
   } catch (error) {
@@ -83,6 +92,15 @@ async function addFriend(id: number, friendId: number) {
     console.error("Error adding friend:", error);
     throw error;
   }
+}
+
+async function countFriends(userId: number, friendId: number) {
+  const ids = getUserAAndUserB(userId, friendId);
+  const count = await prisma.friendship.count({
+    where: ids,
+  });
+
+  return count;
 }
 
 async function deleteFriend(friendName: string, userName: string) {
@@ -122,6 +140,21 @@ async function listFriendsByUserName(name: string) {
   `;
 }
 
+// message queries
+async function countMessages(id: number) {
+  const count = await prisma.message.count({
+    where: { id },
+  });
+  return count;
+}
+
+async function countThread(id: number) {
+  const count = await prisma.message.count({
+    where: { id },
+  });
+  return count;
+}
+
 export {
   // user queries
   addUser,
@@ -130,6 +163,11 @@ export {
 
   // friend queries
   addFriend,
+  countFriends,
   deleteFriend,
   listFriendsByUserName,
+
+  // message queries
+  countMessages,
+  countThread,
 };

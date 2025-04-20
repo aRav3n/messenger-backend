@@ -59,7 +59,7 @@ test("Adding friend route fails when not logged in", (done) => {
     .post("/friend")
     .type("form")
     .send({ name: wrongName })
-    .expect(403)
+    .expect(401)
     .expect({ message: "you have to be logged in to do that" }, done);
 });
 
@@ -120,7 +120,7 @@ test("Delete friend fails when not signed in", (done) => {
     .delete("/friend")
     .type("form")
     .send({ name: secondFriend.name })
-    .expect(403)
+    .expect(401)
     .expect("Content-Type", /json/)
     .expect({ message: "you have to be logged in to do that" }, done);
 });

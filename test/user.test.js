@@ -62,7 +62,7 @@ test("Have to be logged in to delete account", (done) => {
     .delete("/user/1/delete")
     .expect("Content-Type", /json/)
     .expect({ message: "you have to be logged in to do that" })
-    .expect(403, done);
+    .expect(401, done);
 });
 
 test("User can only delete their own account", async () => {
