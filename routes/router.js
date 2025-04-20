@@ -1,23 +1,15 @@
 const { Router } = require("express");
-const controller = require("../controllers/controller");
 const router = Router();
 
-const security = require("../controllers/security");
+const userRouter = require("./userRouter");
+const friendRouter = require("./friendRouter");
+const messageRouter = require("./messageRouter");
 
-router.post("/user/signup", controller.createUser);
-router.post("/user/login", controller.logUserIn);
-router.delete("/user/:userId/delete", security.verify, controller.deleteUser);
+router.use("/user", userRouter);
 
-router.post("/friend", security.verify, controller.createFriend);
-router.get("/friend/:userName", controller.listFriends);
-router.delete("/friend", security.verify, controller.deleteFriend);
+router.use("/friend", friendRouter);
 
-/*
-router.get("/message/:userId/:messageId", controller.listSingleMessage);
-router.post("/message/:userId/thread/:threadId", controller.createMessage);
-
-router.get("/thread/:userId", controller.listThreads);
-*/
+router.use("/message", messageRouter);
 
 router.use((req, res) => {
   console.log(`Request type: ${req.method}, URL: ${req.url}`);
