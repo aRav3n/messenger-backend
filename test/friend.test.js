@@ -154,7 +154,7 @@ test("Delete friend works when logged in and has correct friend name", (done) =>
     .expect(200)
     .expect("Content-Type", /json/)
     .then((res) => {
-      const deletedFriendship = res.body[0];
+      const deletedFriendship = res.body;
       const smallerId = Math.min(user.id, friend.id);
       const largerId = Math.max(user.id, friend.id);
       expect(deletedFriendship).toHaveProperty("id");

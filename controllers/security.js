@@ -65,14 +65,22 @@ async function sign(user) {
 
 function verify(req, res, next) {
   const token = getTokenFromReq(req);
-  if (token) {
-    req.token = token;
-    next();
-  } else {
+  if (!token) {
     return res
-      .status(403)
+      .status(401)
       .json({ message: "you have to be logged in to do that" });
   }
+  req.token = token;
+  jwt.verify(token, secretKey, (err, user) => {
+    if (err) {
+      return res.status(403).json({
+        message: "there was an error with your login, please sign in again",
+      });
+    } else {
+      req.user = user;
+      next();
+    }
+  });
 }
 
 module.exports = { gerUserData, listUserDataFromToken, sign, verify };

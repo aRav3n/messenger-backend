@@ -1,5 +1,4 @@
-const { body, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
+require("dotenv");
 
 const db = require("../db/queries");
 const security = require("./security");
@@ -13,8 +12,7 @@ async function createFriend(req, res) {
       .status(404)
       .json({ message: `${friendName} was not found in the user database` });
   }
-  const user = await security.listUserDataFromToken(req.token);
-  const userObject = user.user;
+  const userObject = req.user.user;
 
   const newFriendship = await db.addFriend(userObject.id, friendObject.id);
   if (!newFriendship) {
@@ -31,7 +29,7 @@ async function createFriend(req, res) {
 
 async function deleteFriend(req, res) {
   const friendName = req.body.name;
-  const user = await security.gerUserData(req);
+  const user = req.user.user;
   const userName = user.name;
 
   const deletedFriendship = await db.deleteFriend(friendName, userName);
@@ -40,7 +38,6 @@ async function deleteFriend(req, res) {
       message: `Sorry, a friendship between ${userName} and ${friendName} was not found`,
     });
   }
-
   return res.status(200).json(deletedFriendship);
 }
 

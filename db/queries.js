@@ -33,6 +33,12 @@ const prisma = new prisma_1.PrismaClient({
         },
     },
 }).$extends((0, extension_accelerate_1.withAccelerate)()); // need to fix this line after Emmet paste to put the money sign in front of extends
+// internal use functions
+function getUserAAndUserB(userId, friendId) {
+    const userAId = Math.min(userId, friendId);
+    const userBId = Math.max(userId, friendId);
+    return { userAId, userBId };
+}
 // user queries
 function addUser(name, hash) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -47,23 +53,7 @@ function addUser(name, hash) {
 }
 function deleteUser(id) {
     return __awaiter(this, void 0, void 0, function* () {
-        // delete user's messages
-        yield prisma.message.deleteMany({
-            where: {
-                OR: [{ senderId: id }, { receiverId: id }],
-            },
-        });
-        // delete user's message threads
-        yield prisma.thread.deleteMany({
-            where: { userId: id },
-        });
-        // delete user's friendships
-        yield prisma.friendship.deleteMany({
-            where: {
-                OR: [{ userAId: id }, { userBId: id }],
-            },
-        });
-        // finally delete the user's account
+        // delete the user's account
         const deletedUser = yield prisma.user.delete({
             where: { id },
         });
@@ -79,11 +69,6 @@ function listUserByName(name) {
     });
 }
 // friend queries
-function getUserAAndUserB(userId, friendId) {
-    const userAId = Math.min(userId, friendId);
-    const userBId = Math.max(userId, friendId);
-    return { userAId, userBId };
-}
 function addFriend(userId, friendId) {
     return __awaiter(this, void 0, void 0, function* () {
         const ids = getUserAAndUserB(userId, friendId);
@@ -116,19 +101,22 @@ function countFriends(userId, friendId) {
 }
 function deleteFriend(friendName, userName) {
     return __awaiter(this, void 0, void 0, function* () {
-        return prisma.$queryRaw `
-    WITH user_ids AS (
-      SELECT 
-        (SELECT id FROM "User" WHERE name = ${userName}) AS user_id,
-        (SELECT id FROM "User" WHERE name = ${friendName}) AS friend_id
-    )
-    DELETE FROM "Friendship"
-    WHERE 
-      ("userAId" = (SELECT user_id FROM user_ids) AND "userBId" = (SELECT friend_id FROM user_ids))
-      OR
-      ("userAId" = (SELECT friend_id FROM user_ids) AND "userBId" = (SELECT user_id FROM user_ids))
-    RETURNING *;
-  `;
+        const friend = yield listUserByName(friendName);
+        const user = yield listUserByName(userName);
+        if (!friend || !user) {
+            return null;
+        }
+        const count = yield countFriends(friend.id, user.id);
+        if (count === 0) {
+            return null;
+        }
+        const ids = getUserAAndUserB(user.id, friend.id);
+        const deletedFriendship = yield prisma.friendship.delete({
+            where: {
+                userAId_userBId: ids,
+            },
+        });
+        return deletedFriendship;
     });
 }
 function listFriendsByUserName(name) {

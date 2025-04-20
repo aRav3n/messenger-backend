@@ -37,26 +37,7 @@ async function addUser(name: string, hash: string) {
 }
 
 async function deleteUser(id: number) {
-  // delete user's messages
-  await prisma.message.deleteMany({
-    where: {
-      OR: [{ senderId: id }, { receiverId: id }],
-    },
-  });
-
-  // delete user's message threads
-  await prisma.thread.deleteMany({
-    where: { userId: id },
-  });
-
-  // delete user's friendships
-  await prisma.friendship.deleteMany({
-    where: {
-      OR: [{ userAId: id }, { userBId: id }],
-    },
-  });
-
-  // finally delete the user's account
+  // delete the user's account
   const deletedUser = await prisma.user.delete({
     where: { id },
   });
@@ -104,19 +85,22 @@ async function countFriends(userId: number, friendId: number) {
 }
 
 async function deleteFriend(friendName: string, userName: string) {
-  return prisma.$queryRaw`
-    WITH user_ids AS (
-      SELECT 
-        (SELECT id FROM "User" WHERE name = ${userName}) AS user_id,
-        (SELECT id FROM "User" WHERE name = ${friendName}) AS friend_id
-    )
-    DELETE FROM "Friendship"
-    WHERE 
-      ("userAId" = (SELECT user_id FROM user_ids) AND "userBId" = (SELECT friend_id FROM user_ids))
-      OR
-      ("userAId" = (SELECT friend_id FROM user_ids) AND "userBId" = (SELECT user_id FROM user_ids))
-    RETURNING *;
-  `;
+  const friend = await listUserByName(friendName);
+  const user = await listUserByName(userName);
+  if (!friend || !user) {
+    return null;
+  }
+  const count = await countFriends(friend.id, user.id);
+  if (count === 0) {
+    return null;
+  }
+  const ids = getUserAAndUserB(user.id, friend.id);
+  const deletedFriendship = await prisma.friendship.delete({
+    where: {
+      userAId_userBId: ids,
+    },
+  });
+  return deletedFriendship;
 }
 
 async function listFriendsByUserName(name: string) {

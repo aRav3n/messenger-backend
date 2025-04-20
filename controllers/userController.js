@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 const db = require("../db/queries");
 const security = require("./security");
@@ -60,7 +61,7 @@ const deleteUser = [
   validateUser,
   async (req, res) => {
     try {
-      const userInfo = await security.gerUserData(req);
+      const userInfo = req.user.user;
       if (!userInfo) {
         return;
       }
