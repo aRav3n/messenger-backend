@@ -133,12 +133,7 @@ exports.Prisma.MessageScalarFieldEnum = {
   id: 'id',
   senderId: 'senderId',
   receiverId: 'receiverId',
-  threadId: 'threadId'
-};
-
-exports.Prisma.ThreadScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId'
+  friendshipId: 'friendshipId'
 };
 
 exports.Prisma.SortOrder = {
@@ -155,8 +150,7 @@ exports.Prisma.QueryMode = {
 exports.Prisma.ModelName = {
   User: 'User',
   Friendship: 'Friendship',
-  Message: 'Message',
-  Thread: 'Thread'
+  Message: 'Message'
 };
 
 /**

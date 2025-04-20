@@ -28,11 +28,6 @@ export type Friendship = $Result.DefaultSelection<Prisma.$FriendshipPayload>
  * 
  */
 export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
-/**
- * Model Thread
- * 
- */
-export type Thread = $Result.DefaultSelection<Prisma.$ThreadPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -188,16 +183,6 @@ export class PrismaClient<
     * ```
     */
   get message(): Prisma.MessageDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.thread`: Exposes CRUD operations for the **Thread** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Threads
-    * const threads = await prisma.thread.findMany()
-    * ```
-    */
-  get thread(): Prisma.ThreadDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -640,8 +625,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Friendship: 'Friendship',
-    Message: 'Message',
-    Thread: 'Thread'
+    Message: 'Message'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -660,7 +644,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "friendship" | "message" | "thread"
+      modelProps: "user" | "friendship" | "message"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -886,80 +870,6 @@ export namespace Prisma {
           }
         }
       }
-      Thread: {
-        payload: Prisma.$ThreadPayload<ExtArgs>
-        fields: Prisma.ThreadFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ThreadFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ThreadFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>
-          }
-          findFirst: {
-            args: Prisma.ThreadFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ThreadFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>
-          }
-          findMany: {
-            args: Prisma.ThreadFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>[]
-          }
-          create: {
-            args: Prisma.ThreadCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>
-          }
-          createMany: {
-            args: Prisma.ThreadCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.ThreadCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>[]
-          }
-          delete: {
-            args: Prisma.ThreadDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>
-          }
-          update: {
-            args: Prisma.ThreadUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>
-          }
-          deleteMany: {
-            args: Prisma.ThreadDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ThreadUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.ThreadUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>[]
-          }
-          upsert: {
-            args: Prisma.ThreadUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ThreadPayload>
-          }
-          aggregate: {
-            args: Prisma.ThreadAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateThread>
-          }
-          groupBy: {
-            args: Prisma.ThreadGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ThreadGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ThreadCountArgs<ExtArgs>
-            result: $Utils.Optional<ThreadCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -1047,7 +957,6 @@ export namespace Prisma {
     user?: UserOmit
     friendship?: FriendshipOmit
     message?: MessageOmit
-    thread?: ThreadOmit
   }
 
   /* Types for Logging */
@@ -1146,7 +1055,6 @@ export namespace Prisma {
     friendshipsB: number
     sentMessages: number
     receivedMessages: number
-    Thread: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1154,7 +1062,6 @@ export namespace Prisma {
     friendshipsB?: boolean | UserCountOutputTypeCountFriendshipsBArgs
     sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
     receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
-    Thread?: boolean | UserCountOutputTypeCountThreadArgs
   }
 
   // Custom InputTypes
@@ -1196,41 +1103,34 @@ export namespace Prisma {
     where?: MessageWhereInput
   }
 
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountThreadArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ThreadWhereInput
-  }
-
 
   /**
-   * Count Type ThreadCountOutputType
+   * Count Type FriendshipCountOutputType
    */
 
-  export type ThreadCountOutputType = {
+  export type FriendshipCountOutputType = {
     Message: number
   }
 
-  export type ThreadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Message?: boolean | ThreadCountOutputTypeCountMessageArgs
+  export type FriendshipCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Message?: boolean | FriendshipCountOutputTypeCountMessageArgs
   }
 
   // Custom InputTypes
   /**
-   * ThreadCountOutputType without action
+   * FriendshipCountOutputType without action
    */
-  export type ThreadCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FriendshipCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ThreadCountOutputType
+     * Select specific fields to fetch from the FriendshipCountOutputType
      */
-    select?: ThreadCountOutputTypeSelect<ExtArgs> | null
+    select?: FriendshipCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * ThreadCountOutputType without action
+   * FriendshipCountOutputType without action
    */
-  export type ThreadCountOutputTypeCountMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FriendshipCountOutputTypeCountMessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MessageWhereInput
   }
 
@@ -1425,7 +1325,6 @@ export namespace Prisma {
     friendshipsB?: boolean | User$friendshipsBArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
-    Thread?: boolean | User$ThreadArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1453,7 +1352,6 @@ export namespace Prisma {
     friendshipsB?: boolean | User$friendshipsBArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
-    Thread?: boolean | User$ThreadArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1466,7 +1364,6 @@ export namespace Prisma {
       friendshipsB: Prisma.$FriendshipPayload<ExtArgs>[]
       sentMessages: Prisma.$MessagePayload<ExtArgs>[]
       receivedMessages: Prisma.$MessagePayload<ExtArgs>[]
-      Thread: Prisma.$ThreadPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1870,7 +1767,6 @@ export namespace Prisma {
     friendshipsB<T extends User$friendshipsBArgs<ExtArgs> = {}>(args?: Subset<T, User$friendshipsBArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FriendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedMessages<T extends User$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Thread<T extends User$ThreadArgs<ExtArgs> = {}>(args?: Subset<T, User$ThreadArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2387,30 +2283,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.Thread
-   */
-  export type User$ThreadArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    where?: ThreadWhereInput
-    orderBy?: ThreadOrderByWithRelationInput | ThreadOrderByWithRelationInput[]
-    cursor?: ThreadWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ThreadScalarFieldEnum | ThreadScalarFieldEnum[]
-  }
-
-  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2621,6 +2493,8 @@ export namespace Prisma {
     userBId?: boolean
     userA?: boolean | UserDefaultArgs<ExtArgs>
     userB?: boolean | UserDefaultArgs<ExtArgs>
+    Message?: boolean | Friendship$MessageArgs<ExtArgs>
+    _count?: boolean | FriendshipCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["friendship"]>
 
   export type FriendshipSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2649,6 +2523,8 @@ export namespace Prisma {
   export type FriendshipInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userA?: boolean | UserDefaultArgs<ExtArgs>
     userB?: boolean | UserDefaultArgs<ExtArgs>
+    Message?: boolean | Friendship$MessageArgs<ExtArgs>
+    _count?: boolean | FriendshipCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FriendshipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userA?: boolean | UserDefaultArgs<ExtArgs>
@@ -2664,6 +2540,7 @@ export namespace Prisma {
     objects: {
       userA: Prisma.$UserPayload<ExtArgs>
       userB: Prisma.$UserPayload<ExtArgs>
+      Message: Prisma.$MessagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3065,6 +2942,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     userA<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     userB<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Message<T extends Friendship$MessageArgs<ExtArgs> = {}>(args?: Subset<T, Friendship$MessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3493,6 +3371,30 @@ export namespace Prisma {
   }
 
   /**
+   * Friendship.Message
+   */
+  export type Friendship$MessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Message
+     */
+    select?: MessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Message
+     */
+    omit?: MessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MessageInclude<ExtArgs> | null
+    where?: MessageWhereInput
+    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
+    cursor?: MessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
    * Friendship without action
    */
   export type FriendshipDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3527,35 +3429,35 @@ export namespace Prisma {
     id: number | null
     senderId: number | null
     receiverId: number | null
-    threadId: number | null
+    friendshipId: number | null
   }
 
   export type MessageSumAggregateOutputType = {
     id: number | null
     senderId: number | null
     receiverId: number | null
-    threadId: number | null
+    friendshipId: number | null
   }
 
   export type MessageMinAggregateOutputType = {
     id: number | null
     senderId: number | null
     receiverId: number | null
-    threadId: number | null
+    friendshipId: number | null
   }
 
   export type MessageMaxAggregateOutputType = {
     id: number | null
     senderId: number | null
     receiverId: number | null
-    threadId: number | null
+    friendshipId: number | null
   }
 
   export type MessageCountAggregateOutputType = {
     id: number
     senderId: number
     receiverId: number
-    threadId: number
+    friendshipId: number
     _all: number
   }
 
@@ -3564,35 +3466,35 @@ export namespace Prisma {
     id?: true
     senderId?: true
     receiverId?: true
-    threadId?: true
+    friendshipId?: true
   }
 
   export type MessageSumAggregateInputType = {
     id?: true
     senderId?: true
     receiverId?: true
-    threadId?: true
+    friendshipId?: true
   }
 
   export type MessageMinAggregateInputType = {
     id?: true
     senderId?: true
     receiverId?: true
-    threadId?: true
+    friendshipId?: true
   }
 
   export type MessageMaxAggregateInputType = {
     id?: true
     senderId?: true
     receiverId?: true
-    threadId?: true
+    friendshipId?: true
   }
 
   export type MessageCountAggregateInputType = {
     id?: true
     senderId?: true
     receiverId?: true
-    threadId?: true
+    friendshipId?: true
     _all?: true
   }
 
@@ -3686,7 +3588,7 @@ export namespace Prisma {
     id: number
     senderId: number
     receiverId: number
-    threadId: number
+    friendshipId: number
     _count: MessageCountAggregateOutputType | null
     _avg: MessageAvgAggregateOutputType | null
     _sum: MessageSumAggregateOutputType | null
@@ -3712,54 +3614,54 @@ export namespace Prisma {
     id?: boolean
     senderId?: boolean
     receiverId?: boolean
-    threadId?: boolean
+    friendshipId?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
-    thread?: boolean | ThreadDefaultArgs<ExtArgs>
+    friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     senderId?: boolean
     receiverId?: boolean
-    threadId?: boolean
+    friendshipId?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
-    thread?: boolean | ThreadDefaultArgs<ExtArgs>
+    friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     senderId?: boolean
     receiverId?: boolean
-    threadId?: boolean
+    friendshipId?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
-    thread?: boolean | ThreadDefaultArgs<ExtArgs>
+    friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectScalar = {
     id?: boolean
     senderId?: boolean
     receiverId?: boolean
-    threadId?: boolean
+    friendshipId?: boolean
   }
 
-  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "senderId" | "receiverId" | "threadId", ExtArgs["result"]["message"]>
+  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "senderId" | "receiverId" | "friendshipId", ExtArgs["result"]["message"]>
   export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
-    thread?: boolean | ThreadDefaultArgs<ExtArgs>
+    friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
   }
   export type MessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
-    thread?: boolean | ThreadDefaultArgs<ExtArgs>
+    friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
   }
   export type MessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
-    thread?: boolean | ThreadDefaultArgs<ExtArgs>
+    friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
   }
 
   export type $MessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3767,13 +3669,13 @@ export namespace Prisma {
     objects: {
       sender: Prisma.$UserPayload<ExtArgs>
       receiver: Prisma.$UserPayload<ExtArgs>
-      thread: Prisma.$ThreadPayload<ExtArgs>
+      friendship: Prisma.$FriendshipPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       senderId: number
       receiverId: number
-      threadId: number
+      friendshipId: number
     }, ExtArgs["result"]["message"]>
     composites: {}
   }
@@ -4170,7 +4072,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     receiver<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    thread<T extends ThreadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ThreadDefaultArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    friendship<T extends FriendshipDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FriendshipDefaultArgs<ExtArgs>>): Prisma__FriendshipClient<$Result.GetResult<Prisma.$FriendshipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4203,7 +4105,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Message", 'Int'>
     readonly senderId: FieldRef<"Message", 'Int'>
     readonly receiverId: FieldRef<"Message", 'Int'>
-    readonly threadId: FieldRef<"Message", 'Int'>
+    readonly friendshipId: FieldRef<"Message", 'Int'>
   }
     
 
@@ -4619,1093 +4521,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Thread
-   */
-
-  export type AggregateThread = {
-    _count: ThreadCountAggregateOutputType | null
-    _avg: ThreadAvgAggregateOutputType | null
-    _sum: ThreadSumAggregateOutputType | null
-    _min: ThreadMinAggregateOutputType | null
-    _max: ThreadMaxAggregateOutputType | null
-  }
-
-  export type ThreadAvgAggregateOutputType = {
-    id: number | null
-    userId: number | null
-  }
-
-  export type ThreadSumAggregateOutputType = {
-    id: number | null
-    userId: number | null
-  }
-
-  export type ThreadMinAggregateOutputType = {
-    id: number | null
-    userId: number | null
-  }
-
-  export type ThreadMaxAggregateOutputType = {
-    id: number | null
-    userId: number | null
-  }
-
-  export type ThreadCountAggregateOutputType = {
-    id: number
-    userId: number
-    _all: number
-  }
-
-
-  export type ThreadAvgAggregateInputType = {
-    id?: true
-    userId?: true
-  }
-
-  export type ThreadSumAggregateInputType = {
-    id?: true
-    userId?: true
-  }
-
-  export type ThreadMinAggregateInputType = {
-    id?: true
-    userId?: true
-  }
-
-  export type ThreadMaxAggregateInputType = {
-    id?: true
-    userId?: true
-  }
-
-  export type ThreadCountAggregateInputType = {
-    id?: true
-    userId?: true
-    _all?: true
-  }
-
-  export type ThreadAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Thread to aggregate.
-     */
-    where?: ThreadWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Threads to fetch.
-     */
-    orderBy?: ThreadOrderByWithRelationInput | ThreadOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ThreadWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Threads from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Threads.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Threads
-    **/
-    _count?: true | ThreadCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ThreadAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ThreadSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ThreadMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ThreadMaxAggregateInputType
-  }
-
-  export type GetThreadAggregateType<T extends ThreadAggregateArgs> = {
-        [P in keyof T & keyof AggregateThread]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateThread[P]>
-      : GetScalarType<T[P], AggregateThread[P]>
-  }
-
-
-
-
-  export type ThreadGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ThreadWhereInput
-    orderBy?: ThreadOrderByWithAggregationInput | ThreadOrderByWithAggregationInput[]
-    by: ThreadScalarFieldEnum[] | ThreadScalarFieldEnum
-    having?: ThreadScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ThreadCountAggregateInputType | true
-    _avg?: ThreadAvgAggregateInputType
-    _sum?: ThreadSumAggregateInputType
-    _min?: ThreadMinAggregateInputType
-    _max?: ThreadMaxAggregateInputType
-  }
-
-  export type ThreadGroupByOutputType = {
-    id: number
-    userId: number
-    _count: ThreadCountAggregateOutputType | null
-    _avg: ThreadAvgAggregateOutputType | null
-    _sum: ThreadSumAggregateOutputType | null
-    _min: ThreadMinAggregateOutputType | null
-    _max: ThreadMaxAggregateOutputType | null
-  }
-
-  type GetThreadGroupByPayload<T extends ThreadGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ThreadGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ThreadGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ThreadGroupByOutputType[P]>
-            : GetScalarType<T[P], ThreadGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ThreadSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    Message?: boolean | Thread$MessageArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    _count?: boolean | ThreadCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["thread"]>
-
-  export type ThreadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["thread"]>
-
-  export type ThreadSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["thread"]>
-
-  export type ThreadSelectScalar = {
-    id?: boolean
-    userId?: boolean
-  }
-
-  export type ThreadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId", ExtArgs["result"]["thread"]>
-  export type ThreadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Message?: boolean | Thread$MessageArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    _count?: boolean | ThreadCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type ThreadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type ThreadIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $ThreadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Thread"
-    objects: {
-      Message: Prisma.$MessagePayload<ExtArgs>[]
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      userId: number
-    }, ExtArgs["result"]["thread"]>
-    composites: {}
-  }
-
-  type ThreadGetPayload<S extends boolean | null | undefined | ThreadDefaultArgs> = $Result.GetResult<Prisma.$ThreadPayload, S>
-
-  type ThreadCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ThreadFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ThreadCountAggregateInputType | true
-    }
-
-  export interface ThreadDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Thread'], meta: { name: 'Thread' } }
-    /**
-     * Find zero or one Thread that matches the filter.
-     * @param {ThreadFindUniqueArgs} args - Arguments to find a Thread
-     * @example
-     * // Get one Thread
-     * const thread = await prisma.thread.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ThreadFindUniqueArgs>(args: SelectSubset<T, ThreadFindUniqueArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Thread that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ThreadFindUniqueOrThrowArgs} args - Arguments to find a Thread
-     * @example
-     * // Get one Thread
-     * const thread = await prisma.thread.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ThreadFindUniqueOrThrowArgs>(args: SelectSubset<T, ThreadFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Thread that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ThreadFindFirstArgs} args - Arguments to find a Thread
-     * @example
-     * // Get one Thread
-     * const thread = await prisma.thread.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ThreadFindFirstArgs>(args?: SelectSubset<T, ThreadFindFirstArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Thread that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ThreadFindFirstOrThrowArgs} args - Arguments to find a Thread
-     * @example
-     * // Get one Thread
-     * const thread = await prisma.thread.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ThreadFindFirstOrThrowArgs>(args?: SelectSubset<T, ThreadFindFirstOrThrowArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Threads that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ThreadFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Threads
-     * const threads = await prisma.thread.findMany()
-     * 
-     * // Get first 10 Threads
-     * const threads = await prisma.thread.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const threadWithIdOnly = await prisma.thread.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends ThreadFindManyArgs>(args?: SelectSubset<T, ThreadFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Thread.
-     * @param {ThreadCreateArgs} args - Arguments to create a Thread.
-     * @example
-     * // Create one Thread
-     * const Thread = await prisma.thread.create({
-     *   data: {
-     *     // ... data to create a Thread
-     *   }
-     * })
-     * 
-     */
-    create<T extends ThreadCreateArgs>(args: SelectSubset<T, ThreadCreateArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Threads.
-     * @param {ThreadCreateManyArgs} args - Arguments to create many Threads.
-     * @example
-     * // Create many Threads
-     * const thread = await prisma.thread.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ThreadCreateManyArgs>(args?: SelectSubset<T, ThreadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Threads and returns the data saved in the database.
-     * @param {ThreadCreateManyAndReturnArgs} args - Arguments to create many Threads.
-     * @example
-     * // Create many Threads
-     * const thread = await prisma.thread.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Threads and only return the `id`
-     * const threadWithIdOnly = await prisma.thread.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends ThreadCreateManyAndReturnArgs>(args?: SelectSubset<T, ThreadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Thread.
-     * @param {ThreadDeleteArgs} args - Arguments to delete one Thread.
-     * @example
-     * // Delete one Thread
-     * const Thread = await prisma.thread.delete({
-     *   where: {
-     *     // ... filter to delete one Thread
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ThreadDeleteArgs>(args: SelectSubset<T, ThreadDeleteArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Thread.
-     * @param {ThreadUpdateArgs} args - Arguments to update one Thread.
-     * @example
-     * // Update one Thread
-     * const thread = await prisma.thread.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ThreadUpdateArgs>(args: SelectSubset<T, ThreadUpdateArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Threads.
-     * @param {ThreadDeleteManyArgs} args - Arguments to filter Threads to delete.
-     * @example
-     * // Delete a few Threads
-     * const { count } = await prisma.thread.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ThreadDeleteManyArgs>(args?: SelectSubset<T, ThreadDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Threads.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ThreadUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Threads
-     * const thread = await prisma.thread.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ThreadUpdateManyArgs>(args: SelectSubset<T, ThreadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Threads and returns the data updated in the database.
-     * @param {ThreadUpdateManyAndReturnArgs} args - Arguments to update many Threads.
-     * @example
-     * // Update many Threads
-     * const thread = await prisma.thread.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Threads and only return the `id`
-     * const threadWithIdOnly = await prisma.thread.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends ThreadUpdateManyAndReturnArgs>(args: SelectSubset<T, ThreadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Thread.
-     * @param {ThreadUpsertArgs} args - Arguments to update or create a Thread.
-     * @example
-     * // Update or create a Thread
-     * const thread = await prisma.thread.upsert({
-     *   create: {
-     *     // ... data to create a Thread
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Thread we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ThreadUpsertArgs>(args: SelectSubset<T, ThreadUpsertArgs<ExtArgs>>): Prisma__ThreadClient<$Result.GetResult<Prisma.$ThreadPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Threads.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ThreadCountArgs} args - Arguments to filter Threads to count.
-     * @example
-     * // Count the number of Threads
-     * const count = await prisma.thread.count({
-     *   where: {
-     *     // ... the filter for the Threads we want to count
-     *   }
-     * })
-    **/
-    count<T extends ThreadCountArgs>(
-      args?: Subset<T, ThreadCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ThreadCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Thread.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ThreadAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ThreadAggregateArgs>(args: Subset<T, ThreadAggregateArgs>): Prisma.PrismaPromise<GetThreadAggregateType<T>>
-
-    /**
-     * Group by Thread.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ThreadGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ThreadGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ThreadGroupByArgs['orderBy'] }
-        : { orderBy?: ThreadGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ThreadGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetThreadGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Thread model
-   */
-  readonly fields: ThreadFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Thread.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ThreadClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    Message<T extends Thread$MessageArgs<ExtArgs> = {}>(args?: Subset<T, Thread$MessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Thread model
-   */
-  interface ThreadFieldRefs {
-    readonly id: FieldRef<"Thread", 'Int'>
-    readonly userId: FieldRef<"Thread", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Thread findUnique
-   */
-  export type ThreadFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * Filter, which Thread to fetch.
-     */
-    where: ThreadWhereUniqueInput
-  }
-
-  /**
-   * Thread findUniqueOrThrow
-   */
-  export type ThreadFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * Filter, which Thread to fetch.
-     */
-    where: ThreadWhereUniqueInput
-  }
-
-  /**
-   * Thread findFirst
-   */
-  export type ThreadFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * Filter, which Thread to fetch.
-     */
-    where?: ThreadWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Threads to fetch.
-     */
-    orderBy?: ThreadOrderByWithRelationInput | ThreadOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Threads.
-     */
-    cursor?: ThreadWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Threads from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Threads.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Threads.
-     */
-    distinct?: ThreadScalarFieldEnum | ThreadScalarFieldEnum[]
-  }
-
-  /**
-   * Thread findFirstOrThrow
-   */
-  export type ThreadFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * Filter, which Thread to fetch.
-     */
-    where?: ThreadWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Threads to fetch.
-     */
-    orderBy?: ThreadOrderByWithRelationInput | ThreadOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Threads.
-     */
-    cursor?: ThreadWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Threads from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Threads.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Threads.
-     */
-    distinct?: ThreadScalarFieldEnum | ThreadScalarFieldEnum[]
-  }
-
-  /**
-   * Thread findMany
-   */
-  export type ThreadFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * Filter, which Threads to fetch.
-     */
-    where?: ThreadWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Threads to fetch.
-     */
-    orderBy?: ThreadOrderByWithRelationInput | ThreadOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Threads.
-     */
-    cursor?: ThreadWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Threads from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Threads.
-     */
-    skip?: number
-    distinct?: ThreadScalarFieldEnum | ThreadScalarFieldEnum[]
-  }
-
-  /**
-   * Thread create
-   */
-  export type ThreadCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Thread.
-     */
-    data: XOR<ThreadCreateInput, ThreadUncheckedCreateInput>
-  }
-
-  /**
-   * Thread createMany
-   */
-  export type ThreadCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Threads.
-     */
-    data: ThreadCreateManyInput | ThreadCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Thread createManyAndReturn
-   */
-  export type ThreadCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * The data used to create many Threads.
-     */
-    data: ThreadCreateManyInput | ThreadCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Thread update
-   */
-  export type ThreadUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Thread.
-     */
-    data: XOR<ThreadUpdateInput, ThreadUncheckedUpdateInput>
-    /**
-     * Choose, which Thread to update.
-     */
-    where: ThreadWhereUniqueInput
-  }
-
-  /**
-   * Thread updateMany
-   */
-  export type ThreadUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Threads.
-     */
-    data: XOR<ThreadUpdateManyMutationInput, ThreadUncheckedUpdateManyInput>
-    /**
-     * Filter which Threads to update
-     */
-    where?: ThreadWhereInput
-    /**
-     * Limit how many Threads to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Thread updateManyAndReturn
-   */
-  export type ThreadUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * The data used to update Threads.
-     */
-    data: XOR<ThreadUpdateManyMutationInput, ThreadUncheckedUpdateManyInput>
-    /**
-     * Filter which Threads to update
-     */
-    where?: ThreadWhereInput
-    /**
-     * Limit how many Threads to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Thread upsert
-   */
-  export type ThreadUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Thread to update in case it exists.
-     */
-    where: ThreadWhereUniqueInput
-    /**
-     * In case the Thread found by the `where` argument doesn't exist, create a new Thread with this data.
-     */
-    create: XOR<ThreadCreateInput, ThreadUncheckedCreateInput>
-    /**
-     * In case the Thread was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ThreadUpdateInput, ThreadUncheckedUpdateInput>
-  }
-
-  /**
-   * Thread delete
-   */
-  export type ThreadDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-    /**
-     * Filter which Thread to delete.
-     */
-    where: ThreadWhereUniqueInput
-  }
-
-  /**
-   * Thread deleteMany
-   */
-  export type ThreadDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Threads to delete
-     */
-    where?: ThreadWhereInput
-    /**
-     * Limit how many Threads to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Thread.Message
-   */
-  export type Thread$MessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Message
-     */
-    select?: MessageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Message
-     */
-    omit?: MessageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MessageInclude<ExtArgs> | null
-    where?: MessageWhereInput
-    orderBy?: MessageOrderByWithRelationInput | MessageOrderByWithRelationInput[]
-    cursor?: MessageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
-  }
-
-  /**
-   * Thread without action
-   */
-  export type ThreadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Thread
-     */
-    select?: ThreadSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Thread
-     */
-    omit?: ThreadOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ThreadInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -5741,18 +4556,10 @@ export namespace Prisma {
     id: 'id',
     senderId: 'senderId',
     receiverId: 'receiverId',
-    threadId: 'threadId'
+    friendshipId: 'friendshipId'
   };
 
   export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
-
-
-  export const ThreadScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId'
-  };
-
-  export type ThreadScalarFieldEnum = (typeof ThreadScalarFieldEnum)[keyof typeof ThreadScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5832,7 +4639,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipListRelationFilter
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
-    Thread?: ThreadListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5843,7 +4649,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipOrderByRelationAggregateInput
     sentMessages?: MessageOrderByRelationAggregateInput
     receivedMessages?: MessageOrderByRelationAggregateInput
-    Thread?: ThreadOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -5857,7 +4662,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipListRelationFilter
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
-    Thread?: ThreadListRelationFilter
   }, "id">
 
   export type UserOrderByWithAggregationInput = {
@@ -5889,6 +4693,7 @@ export namespace Prisma {
     userBId?: IntFilter<"Friendship"> | number
     userA?: XOR<UserScalarRelationFilter, UserWhereInput>
     userB?: XOR<UserScalarRelationFilter, UserWhereInput>
+    Message?: MessageListRelationFilter
   }
 
   export type FriendshipOrderByWithRelationInput = {
@@ -5897,6 +4702,7 @@ export namespace Prisma {
     userBId?: SortOrder
     userA?: UserOrderByWithRelationInput
     userB?: UserOrderByWithRelationInput
+    Message?: MessageOrderByRelationAggregateInput
   }
 
   export type FriendshipWhereUniqueInput = Prisma.AtLeast<{
@@ -5909,6 +4715,7 @@ export namespace Prisma {
     userBId?: IntFilter<"Friendship"> | number
     userA?: XOR<UserScalarRelationFilter, UserWhereInput>
     userB?: XOR<UserScalarRelationFilter, UserWhereInput>
+    Message?: MessageListRelationFilter
   }, "id" | "userAId_userBId">
 
   export type FriendshipOrderByWithAggregationInput = {
@@ -5938,20 +4745,20 @@ export namespace Prisma {
     id?: IntFilter<"Message"> | number
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
-    threadId?: IntFilter<"Message"> | number
+    friendshipId?: IntFilter<"Message"> | number
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
-    thread?: XOR<ThreadScalarRelationFilter, ThreadWhereInput>
+    friendship?: XOR<FriendshipScalarRelationFilter, FriendshipWhereInput>
   }
 
   export type MessageOrderByWithRelationInput = {
     id?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    threadId?: SortOrder
+    friendshipId?: SortOrder
     sender?: UserOrderByWithRelationInput
     receiver?: UserOrderByWithRelationInput
-    thread?: ThreadOrderByWithRelationInput
+    friendship?: FriendshipOrderByWithRelationInput
   }
 
   export type MessageWhereUniqueInput = Prisma.AtLeast<{
@@ -5961,17 +4768,17 @@ export namespace Prisma {
     NOT?: MessageWhereInput | MessageWhereInput[]
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
-    threadId?: IntFilter<"Message"> | number
+    friendshipId?: IntFilter<"Message"> | number
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
-    thread?: XOR<ThreadScalarRelationFilter, ThreadWhereInput>
+    friendship?: XOR<FriendshipScalarRelationFilter, FriendshipWhereInput>
   }, "id">
 
   export type MessageOrderByWithAggregationInput = {
     id?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    threadId?: SortOrder
+    friendshipId?: SortOrder
     _count?: MessageCountOrderByAggregateInput
     _avg?: MessageAvgOrderByAggregateInput
     _max?: MessageMaxOrderByAggregateInput
@@ -5986,52 +4793,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Message"> | number
     senderId?: IntWithAggregatesFilter<"Message"> | number
     receiverId?: IntWithAggregatesFilter<"Message"> | number
-    threadId?: IntWithAggregatesFilter<"Message"> | number
-  }
-
-  export type ThreadWhereInput = {
-    AND?: ThreadWhereInput | ThreadWhereInput[]
-    OR?: ThreadWhereInput[]
-    NOT?: ThreadWhereInput | ThreadWhereInput[]
-    id?: IntFilter<"Thread"> | number
-    userId?: IntFilter<"Thread"> | number
-    Message?: MessageListRelationFilter
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type ThreadOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    Message?: MessageOrderByRelationAggregateInput
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type ThreadWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: ThreadWhereInput | ThreadWhereInput[]
-    OR?: ThreadWhereInput[]
-    NOT?: ThreadWhereInput | ThreadWhereInput[]
-    userId?: IntFilter<"Thread"> | number
-    Message?: MessageListRelationFilter
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
-
-  export type ThreadOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    _count?: ThreadCountOrderByAggregateInput
-    _avg?: ThreadAvgOrderByAggregateInput
-    _max?: ThreadMaxOrderByAggregateInput
-    _min?: ThreadMinOrderByAggregateInput
-    _sum?: ThreadSumOrderByAggregateInput
-  }
-
-  export type ThreadScalarWhereWithAggregatesInput = {
-    AND?: ThreadScalarWhereWithAggregatesInput | ThreadScalarWhereWithAggregatesInput[]
-    OR?: ThreadScalarWhereWithAggregatesInput[]
-    NOT?: ThreadScalarWhereWithAggregatesInput | ThreadScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Thread"> | number
-    userId?: IntWithAggregatesFilter<"Thread"> | number
+    friendshipId?: IntWithAggregatesFilter<"Message"> | number
   }
 
   export type UserCreateInput = {
@@ -6041,7 +4803,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipCreateNestedManyWithoutUserBInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6052,7 +4813,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipUncheckedCreateNestedManyWithoutUserBInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6062,7 +4822,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipUpdateManyWithoutUserBNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6073,7 +4832,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipUncheckedUpdateManyWithoutUserBNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6096,23 +4854,27 @@ export namespace Prisma {
   export type FriendshipCreateInput = {
     userA: UserCreateNestedOneWithoutFriendshipsAInput
     userB: UserCreateNestedOneWithoutFriendshipsBInput
+    Message?: MessageCreateNestedManyWithoutFriendshipInput
   }
 
   export type FriendshipUncheckedCreateInput = {
     id?: number
     userAId: number
     userBId: number
+    Message?: MessageUncheckedCreateNestedManyWithoutFriendshipInput
   }
 
   export type FriendshipUpdateInput = {
     userA?: UserUpdateOneRequiredWithoutFriendshipsANestedInput
     userB?: UserUpdateOneRequiredWithoutFriendshipsBNestedInput
+    Message?: MessageUpdateManyWithoutFriendshipNestedInput
   }
 
   export type FriendshipUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     userAId?: IntFieldUpdateOperationsInput | number
     userBId?: IntFieldUpdateOperationsInput | number
+    Message?: MessageUncheckedUpdateManyWithoutFriendshipNestedInput
   }
 
   export type FriendshipCreateManyInput = {
@@ -6134,34 +4896,34 @@ export namespace Prisma {
   export type MessageCreateInput = {
     sender: UserCreateNestedOneWithoutSentMessagesInput
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
-    thread: ThreadCreateNestedOneWithoutMessageInput
+    friendship: FriendshipCreateNestedOneWithoutMessageInput
   }
 
   export type MessageUncheckedCreateInput = {
     id?: number
     senderId: number
     receiverId: number
-    threadId: number
+    friendshipId: number
   }
 
   export type MessageUpdateInput = {
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
-    thread?: ThreadUpdateOneRequiredWithoutMessageNestedInput
+    friendship?: FriendshipUpdateOneRequiredWithoutMessageNestedInput
   }
 
   export type MessageUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
-    threadId?: IntFieldUpdateOperationsInput | number
+    friendshipId?: IntFieldUpdateOperationsInput | number
   }
 
   export type MessageCreateManyInput = {
     id?: number
     senderId: number
     receiverId: number
-    threadId: number
+    friendshipId: number
   }
 
   export type MessageUpdateManyMutationInput = {
@@ -6172,43 +4934,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
-    threadId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ThreadCreateInput = {
-    Message?: MessageCreateNestedManyWithoutThreadInput
-    user: UserCreateNestedOneWithoutThreadInput
-  }
-
-  export type ThreadUncheckedCreateInput = {
-    id?: number
-    userId: number
-    Message?: MessageUncheckedCreateNestedManyWithoutThreadInput
-  }
-
-  export type ThreadUpdateInput = {
-    Message?: MessageUpdateManyWithoutThreadNestedInput
-    user?: UserUpdateOneRequiredWithoutThreadNestedInput
-  }
-
-  export type ThreadUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    Message?: MessageUncheckedUpdateManyWithoutThreadNestedInput
-  }
-
-  export type ThreadCreateManyInput = {
-    id?: number
-    userId: number
-  }
-
-  export type ThreadUpdateManyMutationInput = {
-
-  }
-
-  export type ThreadUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
+    friendshipId?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -6249,21 +4975,11 @@ export namespace Prisma {
     none?: MessageWhereInput
   }
 
-  export type ThreadListRelationFilter = {
-    every?: ThreadWhereInput
-    some?: ThreadWhereInput
-    none?: ThreadWhereInput
-  }
-
   export type FriendshipOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type MessageOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ThreadOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6367,69 +5083,44 @@ export namespace Prisma {
     userBId?: SortOrder
   }
 
-  export type ThreadScalarRelationFilter = {
-    is?: ThreadWhereInput
-    isNot?: ThreadWhereInput
+  export type FriendshipScalarRelationFilter = {
+    is?: FriendshipWhereInput
+    isNot?: FriendshipWhereInput
   }
 
   export type MessageCountOrderByAggregateInput = {
     id?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    threadId?: SortOrder
+    friendshipId?: SortOrder
   }
 
   export type MessageAvgOrderByAggregateInput = {
     id?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    threadId?: SortOrder
+    friendshipId?: SortOrder
   }
 
   export type MessageMaxOrderByAggregateInput = {
     id?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    threadId?: SortOrder
+    friendshipId?: SortOrder
   }
 
   export type MessageMinOrderByAggregateInput = {
     id?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    threadId?: SortOrder
+    friendshipId?: SortOrder
   }
 
   export type MessageSumOrderByAggregateInput = {
     id?: SortOrder
     senderId?: SortOrder
     receiverId?: SortOrder
-    threadId?: SortOrder
-  }
-
-  export type ThreadCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-  }
-
-  export type ThreadAvgOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-  }
-
-  export type ThreadMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-  }
-
-  export type ThreadMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-  }
-
-  export type ThreadSumOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
+    friendshipId?: SortOrder
   }
 
   export type FriendshipCreateNestedManyWithoutUserAInput = {
@@ -6460,13 +5151,6 @@ export namespace Prisma {
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
-  export type ThreadCreateNestedManyWithoutUserInput = {
-    create?: XOR<ThreadCreateWithoutUserInput, ThreadUncheckedCreateWithoutUserInput> | ThreadCreateWithoutUserInput[] | ThreadUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ThreadCreateOrConnectWithoutUserInput | ThreadCreateOrConnectWithoutUserInput[]
-    createMany?: ThreadCreateManyUserInputEnvelope
-    connect?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-  }
-
   export type FriendshipUncheckedCreateNestedManyWithoutUserAInput = {
     create?: XOR<FriendshipCreateWithoutUserAInput, FriendshipUncheckedCreateWithoutUserAInput> | FriendshipCreateWithoutUserAInput[] | FriendshipUncheckedCreateWithoutUserAInput[]
     connectOrCreate?: FriendshipCreateOrConnectWithoutUserAInput | FriendshipCreateOrConnectWithoutUserAInput[]
@@ -6493,13 +5177,6 @@ export namespace Prisma {
     connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
     createMany?: MessageCreateManyReceiverInputEnvelope
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-  }
-
-  export type ThreadUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ThreadCreateWithoutUserInput, ThreadUncheckedCreateWithoutUserInput> | ThreadCreateWithoutUserInput[] | ThreadUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ThreadCreateOrConnectWithoutUserInput | ThreadCreateOrConnectWithoutUserInput[]
-    createMany?: ThreadCreateManyUserInputEnvelope
-    connect?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -6560,20 +5237,6 @@ export namespace Prisma {
     update?: MessageUpdateWithWhereUniqueWithoutReceiverInput | MessageUpdateWithWhereUniqueWithoutReceiverInput[]
     updateMany?: MessageUpdateManyWithWhereWithoutReceiverInput | MessageUpdateManyWithWhereWithoutReceiverInput[]
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
-  }
-
-  export type ThreadUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ThreadCreateWithoutUserInput, ThreadUncheckedCreateWithoutUserInput> | ThreadCreateWithoutUserInput[] | ThreadUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ThreadCreateOrConnectWithoutUserInput | ThreadCreateOrConnectWithoutUserInput[]
-    upsert?: ThreadUpsertWithWhereUniqueWithoutUserInput | ThreadUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ThreadCreateManyUserInputEnvelope
-    set?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    disconnect?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    delete?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    connect?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    update?: ThreadUpdateWithWhereUniqueWithoutUserInput | ThreadUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ThreadUpdateManyWithWhereWithoutUserInput | ThreadUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ThreadScalarWhereInput | ThreadScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -6640,20 +5303,6 @@ export namespace Prisma {
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
   }
 
-  export type ThreadUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ThreadCreateWithoutUserInput, ThreadUncheckedCreateWithoutUserInput> | ThreadCreateWithoutUserInput[] | ThreadUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ThreadCreateOrConnectWithoutUserInput | ThreadCreateOrConnectWithoutUserInput[]
-    upsert?: ThreadUpsertWithWhereUniqueWithoutUserInput | ThreadUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ThreadCreateManyUserInputEnvelope
-    set?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    disconnect?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    delete?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    connect?: ThreadWhereUniqueInput | ThreadWhereUniqueInput[]
-    update?: ThreadUpdateWithWhereUniqueWithoutUserInput | ThreadUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ThreadUpdateManyWithWhereWithoutUserInput | ThreadUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ThreadScalarWhereInput | ThreadScalarWhereInput[]
-  }
-
   export type UserCreateNestedOneWithoutFriendshipsAInput = {
     create?: XOR<UserCreateWithoutFriendshipsAInput, UserUncheckedCreateWithoutFriendshipsAInput>
     connectOrCreate?: UserCreateOrConnectWithoutFriendshipsAInput
@@ -6664,6 +5313,20 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutFriendshipsBInput, UserUncheckedCreateWithoutFriendshipsBInput>
     connectOrCreate?: UserCreateOrConnectWithoutFriendshipsBInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type MessageCreateNestedManyWithoutFriendshipInput = {
+    create?: XOR<MessageCreateWithoutFriendshipInput, MessageUncheckedCreateWithoutFriendshipInput> | MessageCreateWithoutFriendshipInput[] | MessageUncheckedCreateWithoutFriendshipInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutFriendshipInput | MessageCreateOrConnectWithoutFriendshipInput[]
+    createMany?: MessageCreateManyFriendshipInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type MessageUncheckedCreateNestedManyWithoutFriendshipInput = {
+    create?: XOR<MessageCreateWithoutFriendshipInput, MessageUncheckedCreateWithoutFriendshipInput> | MessageCreateWithoutFriendshipInput[] | MessageUncheckedCreateWithoutFriendshipInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutFriendshipInput | MessageCreateOrConnectWithoutFriendshipInput[]
+    createMany?: MessageCreateManyFriendshipInputEnvelope
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutFriendshipsANestedInput = {
@@ -6682,6 +5345,34 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFriendshipsBInput, UserUpdateWithoutFriendshipsBInput>, UserUncheckedUpdateWithoutFriendshipsBInput>
   }
 
+  export type MessageUpdateManyWithoutFriendshipNestedInput = {
+    create?: XOR<MessageCreateWithoutFriendshipInput, MessageUncheckedCreateWithoutFriendshipInput> | MessageCreateWithoutFriendshipInput[] | MessageUncheckedCreateWithoutFriendshipInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutFriendshipInput | MessageCreateOrConnectWithoutFriendshipInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutFriendshipInput | MessageUpsertWithWhereUniqueWithoutFriendshipInput[]
+    createMany?: MessageCreateManyFriendshipInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutFriendshipInput | MessageUpdateWithWhereUniqueWithoutFriendshipInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutFriendshipInput | MessageUpdateManyWithWhereWithoutFriendshipInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type MessageUncheckedUpdateManyWithoutFriendshipNestedInput = {
+    create?: XOR<MessageCreateWithoutFriendshipInput, MessageUncheckedCreateWithoutFriendshipInput> | MessageCreateWithoutFriendshipInput[] | MessageUncheckedCreateWithoutFriendshipInput[]
+    connectOrCreate?: MessageCreateOrConnectWithoutFriendshipInput | MessageCreateOrConnectWithoutFriendshipInput[]
+    upsert?: MessageUpsertWithWhereUniqueWithoutFriendshipInput | MessageUpsertWithWhereUniqueWithoutFriendshipInput[]
+    createMany?: MessageCreateManyFriendshipInputEnvelope
+    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+    update?: MessageUpdateWithWhereUniqueWithoutFriendshipInput | MessageUpdateWithWhereUniqueWithoutFriendshipInput[]
+    updateMany?: MessageUpdateManyWithWhereWithoutFriendshipInput | MessageUpdateManyWithWhereWithoutFriendshipInput[]
+    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutSentMessagesInput = {
     create?: XOR<UserCreateWithoutSentMessagesInput, UserUncheckedCreateWithoutSentMessagesInput>
     connectOrCreate?: UserCreateOrConnectWithoutSentMessagesInput
@@ -6694,10 +5385,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type ThreadCreateNestedOneWithoutMessageInput = {
-    create?: XOR<ThreadCreateWithoutMessageInput, ThreadUncheckedCreateWithoutMessageInput>
-    connectOrCreate?: ThreadCreateOrConnectWithoutMessageInput
-    connect?: ThreadWhereUniqueInput
+  export type FriendshipCreateNestedOneWithoutMessageInput = {
+    create?: XOR<FriendshipCreateWithoutMessageInput, FriendshipUncheckedCreateWithoutMessageInput>
+    connectOrCreate?: FriendshipCreateOrConnectWithoutMessageInput
+    connect?: FriendshipWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutSentMessagesNestedInput = {
@@ -6716,68 +5407,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivedMessagesInput, UserUpdateWithoutReceivedMessagesInput>, UserUncheckedUpdateWithoutReceivedMessagesInput>
   }
 
-  export type ThreadUpdateOneRequiredWithoutMessageNestedInput = {
-    create?: XOR<ThreadCreateWithoutMessageInput, ThreadUncheckedCreateWithoutMessageInput>
-    connectOrCreate?: ThreadCreateOrConnectWithoutMessageInput
-    upsert?: ThreadUpsertWithoutMessageInput
-    connect?: ThreadWhereUniqueInput
-    update?: XOR<XOR<ThreadUpdateToOneWithWhereWithoutMessageInput, ThreadUpdateWithoutMessageInput>, ThreadUncheckedUpdateWithoutMessageInput>
-  }
-
-  export type MessageCreateNestedManyWithoutThreadInput = {
-    create?: XOR<MessageCreateWithoutThreadInput, MessageUncheckedCreateWithoutThreadInput> | MessageCreateWithoutThreadInput[] | MessageUncheckedCreateWithoutThreadInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutThreadInput | MessageCreateOrConnectWithoutThreadInput[]
-    createMany?: MessageCreateManyThreadInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-  }
-
-  export type UserCreateNestedOneWithoutThreadInput = {
-    create?: XOR<UserCreateWithoutThreadInput, UserUncheckedCreateWithoutThreadInput>
-    connectOrCreate?: UserCreateOrConnectWithoutThreadInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type MessageUncheckedCreateNestedManyWithoutThreadInput = {
-    create?: XOR<MessageCreateWithoutThreadInput, MessageUncheckedCreateWithoutThreadInput> | MessageCreateWithoutThreadInput[] | MessageUncheckedCreateWithoutThreadInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutThreadInput | MessageCreateOrConnectWithoutThreadInput[]
-    createMany?: MessageCreateManyThreadInputEnvelope
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-  }
-
-  export type MessageUpdateManyWithoutThreadNestedInput = {
-    create?: XOR<MessageCreateWithoutThreadInput, MessageUncheckedCreateWithoutThreadInput> | MessageCreateWithoutThreadInput[] | MessageUncheckedCreateWithoutThreadInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutThreadInput | MessageCreateOrConnectWithoutThreadInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutThreadInput | MessageUpsertWithWhereUniqueWithoutThreadInput[]
-    createMany?: MessageCreateManyThreadInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutThreadInput | MessageUpdateWithWhereUniqueWithoutThreadInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutThreadInput | MessageUpdateManyWithWhereWithoutThreadInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutThreadNestedInput = {
-    create?: XOR<UserCreateWithoutThreadInput, UserUncheckedCreateWithoutThreadInput>
-    connectOrCreate?: UserCreateOrConnectWithoutThreadInput
-    upsert?: UserUpsertWithoutThreadInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutThreadInput, UserUpdateWithoutThreadInput>, UserUncheckedUpdateWithoutThreadInput>
-  }
-
-  export type MessageUncheckedUpdateManyWithoutThreadNestedInput = {
-    create?: XOR<MessageCreateWithoutThreadInput, MessageUncheckedCreateWithoutThreadInput> | MessageCreateWithoutThreadInput[] | MessageUncheckedCreateWithoutThreadInput[]
-    connectOrCreate?: MessageCreateOrConnectWithoutThreadInput | MessageCreateOrConnectWithoutThreadInput[]
-    upsert?: MessageUpsertWithWhereUniqueWithoutThreadInput | MessageUpsertWithWhereUniqueWithoutThreadInput[]
-    createMany?: MessageCreateManyThreadInputEnvelope
-    set?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    disconnect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    delete?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
-    update?: MessageUpdateWithWhereUniqueWithoutThreadInput | MessageUpdateWithWhereUniqueWithoutThreadInput[]
-    updateMany?: MessageUpdateManyWithWhereWithoutThreadInput | MessageUpdateManyWithWhereWithoutThreadInput[]
-    deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  export type FriendshipUpdateOneRequiredWithoutMessageNestedInput = {
+    create?: XOR<FriendshipCreateWithoutMessageInput, FriendshipUncheckedCreateWithoutMessageInput>
+    connectOrCreate?: FriendshipCreateOrConnectWithoutMessageInput
+    upsert?: FriendshipUpsertWithoutMessageInput
+    connect?: FriendshipWhereUniqueInput
+    update?: XOR<XOR<FriendshipUpdateToOneWithWhereWithoutMessageInput, FriendshipUpdateWithoutMessageInput>, FriendshipUncheckedUpdateWithoutMessageInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -6851,11 +5486,13 @@ export namespace Prisma {
 
   export type FriendshipCreateWithoutUserAInput = {
     userB: UserCreateNestedOneWithoutFriendshipsBInput
+    Message?: MessageCreateNestedManyWithoutFriendshipInput
   }
 
   export type FriendshipUncheckedCreateWithoutUserAInput = {
     id?: number
     userBId: number
+    Message?: MessageUncheckedCreateNestedManyWithoutFriendshipInput
   }
 
   export type FriendshipCreateOrConnectWithoutUserAInput = {
@@ -6870,11 +5507,13 @@ export namespace Prisma {
 
   export type FriendshipCreateWithoutUserBInput = {
     userA: UserCreateNestedOneWithoutFriendshipsAInput
+    Message?: MessageCreateNestedManyWithoutFriendshipInput
   }
 
   export type FriendshipUncheckedCreateWithoutUserBInput = {
     id?: number
     userAId: number
+    Message?: MessageUncheckedCreateNestedManyWithoutFriendshipInput
   }
 
   export type FriendshipCreateOrConnectWithoutUserBInput = {
@@ -6889,13 +5528,13 @@ export namespace Prisma {
 
   export type MessageCreateWithoutSenderInput = {
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
-    thread: ThreadCreateNestedOneWithoutMessageInput
+    friendship: FriendshipCreateNestedOneWithoutMessageInput
   }
 
   export type MessageUncheckedCreateWithoutSenderInput = {
     id?: number
     receiverId: number
-    threadId: number
+    friendshipId: number
   }
 
   export type MessageCreateOrConnectWithoutSenderInput = {
@@ -6910,13 +5549,13 @@ export namespace Prisma {
 
   export type MessageCreateWithoutReceiverInput = {
     sender: UserCreateNestedOneWithoutSentMessagesInput
-    thread: ThreadCreateNestedOneWithoutMessageInput
+    friendship: FriendshipCreateNestedOneWithoutMessageInput
   }
 
   export type MessageUncheckedCreateWithoutReceiverInput = {
     id?: number
     senderId: number
-    threadId: number
+    friendshipId: number
   }
 
   export type MessageCreateOrConnectWithoutReceiverInput = {
@@ -6926,25 +5565,6 @@ export namespace Prisma {
 
   export type MessageCreateManyReceiverInputEnvelope = {
     data: MessageCreateManyReceiverInput | MessageCreateManyReceiverInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ThreadCreateWithoutUserInput = {
-    Message?: MessageCreateNestedManyWithoutThreadInput
-  }
-
-  export type ThreadUncheckedCreateWithoutUserInput = {
-    id?: number
-    Message?: MessageUncheckedCreateNestedManyWithoutThreadInput
-  }
-
-  export type ThreadCreateOrConnectWithoutUserInput = {
-    where: ThreadWhereUniqueInput
-    create: XOR<ThreadCreateWithoutUserInput, ThreadUncheckedCreateWithoutUserInput>
-  }
-
-  export type ThreadCreateManyUserInputEnvelope = {
-    data: ThreadCreateManyUserInput | ThreadCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -7012,7 +5632,7 @@ export namespace Prisma {
     id?: IntFilter<"Message"> | number
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
-    threadId?: IntFilter<"Message"> | number
+    friendshipId?: IntFilter<"Message"> | number
   }
 
   export type MessageUpsertWithWhereUniqueWithoutReceiverInput = {
@@ -7031,37 +5651,12 @@ export namespace Prisma {
     data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutReceiverInput>
   }
 
-  export type ThreadUpsertWithWhereUniqueWithoutUserInput = {
-    where: ThreadWhereUniqueInput
-    update: XOR<ThreadUpdateWithoutUserInput, ThreadUncheckedUpdateWithoutUserInput>
-    create: XOR<ThreadCreateWithoutUserInput, ThreadUncheckedCreateWithoutUserInput>
-  }
-
-  export type ThreadUpdateWithWhereUniqueWithoutUserInput = {
-    where: ThreadWhereUniqueInput
-    data: XOR<ThreadUpdateWithoutUserInput, ThreadUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ThreadUpdateManyWithWhereWithoutUserInput = {
-    where: ThreadScalarWhereInput
-    data: XOR<ThreadUpdateManyMutationInput, ThreadUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ThreadScalarWhereInput = {
-    AND?: ThreadScalarWhereInput | ThreadScalarWhereInput[]
-    OR?: ThreadScalarWhereInput[]
-    NOT?: ThreadScalarWhereInput | ThreadScalarWhereInput[]
-    id?: IntFilter<"Thread"> | number
-    userId?: IntFilter<"Thread"> | number
-  }
-
   export type UserCreateWithoutFriendshipsAInput = {
     name: string
     hash: string
     friendshipsB?: FriendshipCreateNestedManyWithoutUserBInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsAInput = {
@@ -7071,7 +5666,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipUncheckedCreateNestedManyWithoutUserBInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsAInput = {
@@ -7085,7 +5679,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipCreateNestedManyWithoutUserAInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFriendshipsBInput = {
@@ -7095,12 +5688,32 @@ export namespace Prisma {
     friendshipsA?: FriendshipUncheckedCreateNestedManyWithoutUserAInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFriendshipsBInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutFriendshipsBInput, UserUncheckedCreateWithoutFriendshipsBInput>
+  }
+
+  export type MessageCreateWithoutFriendshipInput = {
+    sender: UserCreateNestedOneWithoutSentMessagesInput
+    receiver: UserCreateNestedOneWithoutReceivedMessagesInput
+  }
+
+  export type MessageUncheckedCreateWithoutFriendshipInput = {
+    id?: number
+    senderId: number
+    receiverId: number
+  }
+
+  export type MessageCreateOrConnectWithoutFriendshipInput = {
+    where: MessageWhereUniqueInput
+    create: XOR<MessageCreateWithoutFriendshipInput, MessageUncheckedCreateWithoutFriendshipInput>
+  }
+
+  export type MessageCreateManyFriendshipInputEnvelope = {
+    data: MessageCreateManyFriendshipInput | MessageCreateManyFriendshipInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutFriendshipsAInput = {
@@ -7120,7 +5733,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipUpdateManyWithoutUserBNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsAInput = {
@@ -7130,7 +5742,6 @@ export namespace Prisma {
     friendshipsB?: FriendshipUncheckedUpdateManyWithoutUserBNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutFriendshipsBInput = {
@@ -7150,7 +5761,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipUpdateManyWithoutUserANestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFriendshipsBInput = {
@@ -7160,7 +5770,22 @@ export namespace Prisma {
     friendshipsA?: FriendshipUncheckedUpdateManyWithoutUserANestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type MessageUpsertWithWhereUniqueWithoutFriendshipInput = {
+    where: MessageWhereUniqueInput
+    update: XOR<MessageUpdateWithoutFriendshipInput, MessageUncheckedUpdateWithoutFriendshipInput>
+    create: XOR<MessageCreateWithoutFriendshipInput, MessageUncheckedCreateWithoutFriendshipInput>
+  }
+
+  export type MessageUpdateWithWhereUniqueWithoutFriendshipInput = {
+    where: MessageWhereUniqueInput
+    data: XOR<MessageUpdateWithoutFriendshipInput, MessageUncheckedUpdateWithoutFriendshipInput>
+  }
+
+  export type MessageUpdateManyWithWhereWithoutFriendshipInput = {
+    where: MessageScalarWhereInput
+    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutFriendshipInput>
   }
 
   export type UserCreateWithoutSentMessagesInput = {
@@ -7169,7 +5794,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipCreateNestedManyWithoutUserAInput
     friendshipsB?: FriendshipCreateNestedManyWithoutUserBInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -7179,7 +5803,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipUncheckedCreateNestedManyWithoutUserAInput
     friendshipsB?: FriendshipUncheckedCreateNestedManyWithoutUserBInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    Thread?: ThreadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -7193,7 +5816,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipCreateNestedManyWithoutUserAInput
     friendshipsB?: FriendshipCreateNestedManyWithoutUserBInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    Thread?: ThreadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -7203,7 +5825,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipUncheckedCreateNestedManyWithoutUserAInput
     friendshipsB?: FriendshipUncheckedCreateNestedManyWithoutUserBInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    Thread?: ThreadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -7211,18 +5832,20 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutReceivedMessagesInput, UserUncheckedCreateWithoutReceivedMessagesInput>
   }
 
-  export type ThreadCreateWithoutMessageInput = {
-    user: UserCreateNestedOneWithoutThreadInput
+  export type FriendshipCreateWithoutMessageInput = {
+    userA: UserCreateNestedOneWithoutFriendshipsAInput
+    userB: UserCreateNestedOneWithoutFriendshipsBInput
   }
 
-  export type ThreadUncheckedCreateWithoutMessageInput = {
+  export type FriendshipUncheckedCreateWithoutMessageInput = {
     id?: number
-    userId: number
+    userAId: number
+    userBId: number
   }
 
-  export type ThreadCreateOrConnectWithoutMessageInput = {
-    where: ThreadWhereUniqueInput
-    create: XOR<ThreadCreateWithoutMessageInput, ThreadUncheckedCreateWithoutMessageInput>
+  export type FriendshipCreateOrConnectWithoutMessageInput = {
+    where: FriendshipWhereUniqueInput
+    create: XOR<FriendshipCreateWithoutMessageInput, FriendshipUncheckedCreateWithoutMessageInput>
   }
 
   export type UserUpsertWithoutSentMessagesInput = {
@@ -7242,7 +5865,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipUpdateManyWithoutUserANestedInput
     friendshipsB?: FriendshipUpdateManyWithoutUserBNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -7252,7 +5874,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipUncheckedUpdateManyWithoutUserANestedInput
     friendshipsB?: FriendshipUncheckedUpdateManyWithoutUserBNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    Thread?: ThreadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedMessagesInput = {
@@ -7272,7 +5893,6 @@ export namespace Prisma {
     friendshipsA?: FriendshipUpdateManyWithoutUserANestedInput
     friendshipsB?: FriendshipUpdateManyWithoutUserBNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    Thread?: ThreadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -7282,118 +5902,28 @@ export namespace Prisma {
     friendshipsA?: FriendshipUncheckedUpdateManyWithoutUserANestedInput
     friendshipsB?: FriendshipUncheckedUpdateManyWithoutUserBNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    Thread?: ThreadUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type ThreadUpsertWithoutMessageInput = {
-    update: XOR<ThreadUpdateWithoutMessageInput, ThreadUncheckedUpdateWithoutMessageInput>
-    create: XOR<ThreadCreateWithoutMessageInput, ThreadUncheckedCreateWithoutMessageInput>
-    where?: ThreadWhereInput
+  export type FriendshipUpsertWithoutMessageInput = {
+    update: XOR<FriendshipUpdateWithoutMessageInput, FriendshipUncheckedUpdateWithoutMessageInput>
+    create: XOR<FriendshipCreateWithoutMessageInput, FriendshipUncheckedCreateWithoutMessageInput>
+    where?: FriendshipWhereInput
   }
 
-  export type ThreadUpdateToOneWithWhereWithoutMessageInput = {
-    where?: ThreadWhereInput
-    data: XOR<ThreadUpdateWithoutMessageInput, ThreadUncheckedUpdateWithoutMessageInput>
+  export type FriendshipUpdateToOneWithWhereWithoutMessageInput = {
+    where?: FriendshipWhereInput
+    data: XOR<FriendshipUpdateWithoutMessageInput, FriendshipUncheckedUpdateWithoutMessageInput>
   }
 
-  export type ThreadUpdateWithoutMessageInput = {
-    user?: UserUpdateOneRequiredWithoutThreadNestedInput
+  export type FriendshipUpdateWithoutMessageInput = {
+    userA?: UserUpdateOneRequiredWithoutFriendshipsANestedInput
+    userB?: UserUpdateOneRequiredWithoutFriendshipsBNestedInput
   }
 
-  export type ThreadUncheckedUpdateWithoutMessageInput = {
+  export type FriendshipUncheckedUpdateWithoutMessageInput = {
     id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type MessageCreateWithoutThreadInput = {
-    sender: UserCreateNestedOneWithoutSentMessagesInput
-    receiver: UserCreateNestedOneWithoutReceivedMessagesInput
-  }
-
-  export type MessageUncheckedCreateWithoutThreadInput = {
-    id?: number
-    senderId: number
-    receiverId: number
-  }
-
-  export type MessageCreateOrConnectWithoutThreadInput = {
-    where: MessageWhereUniqueInput
-    create: XOR<MessageCreateWithoutThreadInput, MessageUncheckedCreateWithoutThreadInput>
-  }
-
-  export type MessageCreateManyThreadInputEnvelope = {
-    data: MessageCreateManyThreadInput | MessageCreateManyThreadInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserCreateWithoutThreadInput = {
-    name: string
-    hash: string
-    friendshipsA?: FriendshipCreateNestedManyWithoutUserAInput
-    friendshipsB?: FriendshipCreateNestedManyWithoutUserBInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-  }
-
-  export type UserUncheckedCreateWithoutThreadInput = {
-    id?: number
-    name: string
-    hash: string
-    friendshipsA?: FriendshipUncheckedCreateNestedManyWithoutUserAInput
-    friendshipsB?: FriendshipUncheckedCreateNestedManyWithoutUserBInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-  }
-
-  export type UserCreateOrConnectWithoutThreadInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutThreadInput, UserUncheckedCreateWithoutThreadInput>
-  }
-
-  export type MessageUpsertWithWhereUniqueWithoutThreadInput = {
-    where: MessageWhereUniqueInput
-    update: XOR<MessageUpdateWithoutThreadInput, MessageUncheckedUpdateWithoutThreadInput>
-    create: XOR<MessageCreateWithoutThreadInput, MessageUncheckedCreateWithoutThreadInput>
-  }
-
-  export type MessageUpdateWithWhereUniqueWithoutThreadInput = {
-    where: MessageWhereUniqueInput
-    data: XOR<MessageUpdateWithoutThreadInput, MessageUncheckedUpdateWithoutThreadInput>
-  }
-
-  export type MessageUpdateManyWithWhereWithoutThreadInput = {
-    where: MessageScalarWhereInput
-    data: XOR<MessageUpdateManyMutationInput, MessageUncheckedUpdateManyWithoutThreadInput>
-  }
-
-  export type UserUpsertWithoutThreadInput = {
-    update: XOR<UserUpdateWithoutThreadInput, UserUncheckedUpdateWithoutThreadInput>
-    create: XOR<UserCreateWithoutThreadInput, UserUncheckedCreateWithoutThreadInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutThreadInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutThreadInput, UserUncheckedUpdateWithoutThreadInput>
-  }
-
-  export type UserUpdateWithoutThreadInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    friendshipsA?: FriendshipUpdateManyWithoutUserANestedInput
-    friendshipsB?: FriendshipUpdateManyWithoutUserBNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutThreadInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    friendshipsA?: FriendshipUncheckedUpdateManyWithoutUserANestedInput
-    friendshipsB?: FriendshipUncheckedUpdateManyWithoutUserBNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    userAId?: IntFieldUpdateOperationsInput | number
+    userBId?: IntFieldUpdateOperationsInput | number
   }
 
   export type FriendshipCreateManyUserAInput = {
@@ -7409,26 +5939,24 @@ export namespace Prisma {
   export type MessageCreateManySenderInput = {
     id?: number
     receiverId: number
-    threadId: number
+    friendshipId: number
   }
 
   export type MessageCreateManyReceiverInput = {
     id?: number
     senderId: number
-    threadId: number
-  }
-
-  export type ThreadCreateManyUserInput = {
-    id?: number
+    friendshipId: number
   }
 
   export type FriendshipUpdateWithoutUserAInput = {
     userB?: UserUpdateOneRequiredWithoutFriendshipsBNestedInput
+    Message?: MessageUpdateManyWithoutFriendshipNestedInput
   }
 
   export type FriendshipUncheckedUpdateWithoutUserAInput = {
     id?: IntFieldUpdateOperationsInput | number
     userBId?: IntFieldUpdateOperationsInput | number
+    Message?: MessageUncheckedUpdateManyWithoutFriendshipNestedInput
   }
 
   export type FriendshipUncheckedUpdateManyWithoutUserAInput = {
@@ -7438,11 +5966,13 @@ export namespace Prisma {
 
   export type FriendshipUpdateWithoutUserBInput = {
     userA?: UserUpdateOneRequiredWithoutFriendshipsANestedInput
+    Message?: MessageUpdateManyWithoutFriendshipNestedInput
   }
 
   export type FriendshipUncheckedUpdateWithoutUserBInput = {
     id?: IntFieldUpdateOperationsInput | number
     userAId?: IntFieldUpdateOperationsInput | number
+    Message?: MessageUncheckedUpdateManyWithoutFriendshipNestedInput
   }
 
   export type FriendshipUncheckedUpdateManyWithoutUserBInput = {
@@ -7452,69 +5982,56 @@ export namespace Prisma {
 
   export type MessageUpdateWithoutSenderInput = {
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
-    thread?: ThreadUpdateOneRequiredWithoutMessageNestedInput
+    friendship?: FriendshipUpdateOneRequiredWithoutMessageNestedInput
   }
 
   export type MessageUncheckedUpdateWithoutSenderInput = {
     id?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
-    threadId?: IntFieldUpdateOperationsInput | number
+    friendshipId?: IntFieldUpdateOperationsInput | number
   }
 
   export type MessageUncheckedUpdateManyWithoutSenderInput = {
     id?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
-    threadId?: IntFieldUpdateOperationsInput | number
+    friendshipId?: IntFieldUpdateOperationsInput | number
   }
 
   export type MessageUpdateWithoutReceiverInput = {
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
-    thread?: ThreadUpdateOneRequiredWithoutMessageNestedInput
+    friendship?: FriendshipUpdateOneRequiredWithoutMessageNestedInput
   }
 
   export type MessageUncheckedUpdateWithoutReceiverInput = {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
-    threadId?: IntFieldUpdateOperationsInput | number
+    friendshipId?: IntFieldUpdateOperationsInput | number
   }
 
   export type MessageUncheckedUpdateManyWithoutReceiverInput = {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
-    threadId?: IntFieldUpdateOperationsInput | number
+    friendshipId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type ThreadUpdateWithoutUserInput = {
-    Message?: MessageUpdateManyWithoutThreadNestedInput
-  }
-
-  export type ThreadUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    Message?: MessageUncheckedUpdateManyWithoutThreadNestedInput
-  }
-
-  export type ThreadUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type MessageCreateManyThreadInput = {
+  export type MessageCreateManyFriendshipInput = {
     id?: number
     senderId: number
     receiverId: number
   }
 
-  export type MessageUpdateWithoutThreadInput = {
+  export type MessageUpdateWithoutFriendshipInput = {
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
   }
 
-  export type MessageUncheckedUpdateWithoutThreadInput = {
+  export type MessageUncheckedUpdateWithoutFriendshipInput = {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type MessageUncheckedUpdateManyWithoutThreadInput = {
+  export type MessageUncheckedUpdateManyWithoutFriendshipInput = {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number

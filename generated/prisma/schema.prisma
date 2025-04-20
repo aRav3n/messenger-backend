@@ -22,32 +22,25 @@ model User {
   friendshipsB     Friendship[] @relation("FriendshipB")
   sentMessages     Message[]    @relation("SentMessages")
   receivedMessages Message[]    @relation("ReceivedMessages")
-  Thread           Thread[]
 }
 
 model Friendship {
-  id      Int  @id @default(autoincrement())
-  userA   User @relation("FriendshipA", fields: [userAId], references: [id])
+  id      Int       @id @default(autoincrement())
+  userA   User      @relation("FriendshipA", fields: [userAId], references: [id], onDelete: Cascade)
   userAId Int
-  userB   User @relation("FriendshipB", fields: [userBId], references: [id])
+  userB   User      @relation("FriendshipB", fields: [userBId], references: [id], onDelete: Cascade)
   userBId Int
+  Message Message[]
 
   @@unique([userAId, userBId])
 }
 
 model Message {
-  id         Int    @id @default(autoincrement())
-  sender     User   @relation("SentMessages", fields: [senderId], references: [id])
-  senderId   Int
-  receiver   User   @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  receiverId Int
-  thread     Thread @relation(fields: [threadId], references: [id])
-  threadId   Int
-}
-
-model Thread {
-  id      Int       @id @default(autoincrement())
-  Message Message[]
-  user    User      @relation(fields: [userId], references: [id])
-  userId  Int
+  id           Int        @id @default(autoincrement())
+  sender       User       @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId     Int
+  receiver     User       @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId   Int
+  friendship   Friendship @relation(fields: [friendshipId], references: [id], onDelete: Cascade)
+  friendshipId Int
 }
