@@ -65,10 +65,12 @@ async function listFriends(req, res) {
     return res.status(404).json({ message: "User ID needed" });
   }
   const friendList = await db.listFriendsById(userId);
-  if (!friendList || friendList.length === 0) {
+  if (!friendList) {
     return res
       .status(404)
-      .json({ message: `No friendships found for user with id of ${userId}` });
+      .json({
+        message: `Error finding friendships for user with id of ${userId}`,
+      });
   }
   return res.status(200).json(friendList);
 }

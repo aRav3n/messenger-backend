@@ -39,8 +39,26 @@ async function checkIfMessageExists(req, res, next) {
   next();
 }
 
+async function checkIfUserExists(req, res, next) {
+  const userId = Number(req.params.userId);
+  if (isNaN(userId)) {
+    return res.status(400).json({ message: "no user id provided" });
+  }
+
+  const user = await db.listUserById(userId);
+  if (!user) {
+    return res
+      .status(400)
+      .json({ message: `no user with an id of ${userId} found` });
+  }
+
+  req.user = user;
+  next();
+}
+
 module.exports = {
   checkIfFriendExists,
   checkIfMessageExists,
+  checkIfUserExists,
   verify,
 };

@@ -106,12 +106,9 @@ test("Adding duplicate friendship fails", (done) => {
 test("List friends fails with nonexistent user ID", (done) => {
   request(app)
     .get(`/friend/${wrongId}`)
-    .expect(404)
+    .expect(400)
     .expect("Content-Type", /json/)
-    .expect(
-      { message: `No friendships found for user with id of ${wrongId}` },
-      done
-    );
+    .expect({ message: `no user with an id of ${wrongId} found` }, done);
 });
 
 test("List friends given a user ID works", (done) => {
