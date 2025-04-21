@@ -5,7 +5,12 @@ const router = Router();
 const middleware = require("../controllers/middleware");
 
 router.post("/", middleware.verify, controller.createFriend);
-router.get("/:userName", controller.listFriends);
-router.delete("/", middleware.verify, controller.deleteFriend);
+router.get("/:userId", controller.listFriends);
+router.delete(
+  "/:friendId",
+  middleware.verify,
+  middleware.checkIfFriendExists,
+  controller.deleteFriend
+);
 
 module.exports = router;

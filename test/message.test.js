@@ -43,9 +43,21 @@ beforeAll(async () => {
     userObject.token = await res.body.token;
   }
 
+  async function createFriendship(user, friend) {
+    await request(app)
+      .post("/friend")
+      .set("Authorization", `Bearer ${user.token}`)
+      .type("form")
+      .send({ name: friend.name })
+      .expect(200)
+      .expect("Content-Type", /json/)
+      .expect({ message: `New friendship with ${friend.name} added!` });
+  }
+
   await logUserIn(firstFriend);
   await logUserIn(secondFriend);
   badToken = firstFriend.token ? firstFriend.token.slice(0, -1) : null;
+  await createFriendship(firstFriend, secondFriend);
 });
 
 // delete both users
@@ -58,6 +70,8 @@ afterAll(async () => {
       .delete(`/user/${userId}/delete`)
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
+    userObject.id = null;
+    userObject.token = null;
   }
 
   await deleteUser(firstFriend);
@@ -91,8 +105,22 @@ test("Create message on a friendship fails when friendship doesn't exist", (done
     .set("Authorization", `Bearer ${firstFriend.token}`)
     .expect(404)
     .expect("Content-Type", /json/)
-    .expect({ message: "that friend wasn't found" }, done);
+    .expect({ message: "that user wasn't found" }, done);
 });
+
+/*
+test("Create message works", (done) => {
+  request(app)
+    .post(`/message/${secondFriend.id}`)
+    .set("Authorization", `Bearer ${firstFriend.token}`)
+    .type("form")
+    .send(message)
+    .then((res) => {
+      const body = res.body;
+      console.log("body:", body);
+    }, done);
+});
+*/
 
 // test list an existing friendship
 test("List message fails when not signed in", (done) => {
@@ -121,7 +149,7 @@ test("List message fails when friendship doesn't exist", (done) => {
     .set("Authorization", `Bearer ${firstFriend.token}`)
     .expect(404)
     .expect("Content-Type", /json/)
-    .expect({ message: "that friend wasn't found" }, done);
+    .expect({ message: "that user wasn't found" }, done);
 });
 
 // test delete an existing message

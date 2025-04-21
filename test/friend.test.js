@@ -14,6 +14,7 @@ const password = "123456";
 const firstFriend = { name: "User 1", password };
 const secondFriend = { name: "User 2", password };
 const wrongName = "Maximus Decimus Meridius";
+const wrongId = 0;
 
 // create firstFriend and secondFriend
 beforeAll(async () => {
@@ -48,6 +49,8 @@ afterAll(async () => {
       .delete(`/user/${user.user.id}/delete`)
       .set("Authorization", `Bearer ${userObject.token}`)
       .expect(200);
+    userObject.id = null;
+    userObject.token = null;
   }
 
   await deleteUser(firstFriend);
@@ -99,25 +102,28 @@ test("Adding duplicate friendship fails", (done) => {
     .expect(409, done);
 });
 
-test("List friends fails with nonexistent username", (done) => {
+test("List friends fails with nonexistent user ID", (done) => {
   request(app)
-    .get(`/friend/${wrongName}`)
+    .get(`/friend/${wrongId}`)
     .expect(404)
     .expect("Content-Type", /json/)
-    .expect({ message: `No friendships found for user: ${wrongName}` }, done);
+    .expect(
+      { message: `No friendships found for user with id of ${wrongId}` },
+      done
+    );
 });
 
-test("List friends given a user name works", (done) => {
+test("List friends given a user ID works", (done) => {
   request(app)
-    .get(`/friend/${firstFriend.name}`)
+    .get(`/friend/${firstFriend.id}`)
     .expect(200)
     .expect("Content-Type", /json/)
-    .expect([{ name: secondFriend.name }], done);
+    .expect([secondFriend.name], done);
 });
 
 test("Delete friend fails when not signed in", (done) => {
   request(app)
-    .delete("/friend")
+    .delete(`/friend/${secondFriend.id}`)
     .type("form")
     .send({ name: secondFriend.name })
     .expect(401)
@@ -125,42 +131,33 @@ test("Delete friend fails when not signed in", (done) => {
     .expect({ message: "you have to be logged in to do that" }, done);
 });
 
-test("Delete friend returns 404 if name not in friend list", (done) => {
-  const user = { ...firstFriend };
-  request(app)
-    .delete("/friend")
-    .set("Authorization", `Bearer ${user.token}`)
-    .type("form")
-    .send({ name: wrongName })
-    .expect(404)
-    .expect("Content-Type", /json/)
-    .expect(
-      {
-        message: `Sorry, a friendship between ${user.name} and ${wrongName} was not found`,
-      },
-      done
-    );
-});
-
 test("Delete friend works when logged in and has correct friend name", (done) => {
-  const user = { ...firstFriend };
-  const friend = { ...secondFriend };
-
   request(app)
-    .delete("/friend")
-    .set("Authorization", `Bearer ${user.token}`)
+    .delete(`/friend/${secondFriend.id}`)
+    .set("Authorization", `Bearer ${firstFriend.token}`)
     .type("form")
-    .send({ name: friend.name })
+    .send({ name: secondFriend.name })
     .expect(200)
     .expect("Content-Type", /json/)
     .then((res) => {
       const deletedFriendship = res.body;
-      const smallerId = Math.min(user.id, friend.id);
-      const largerId = Math.max(user.id, friend.id);
+      const smallerId = Math.min(firstFriend.id, secondFriend.id);
+      const largerId = Math.max(firstFriend.id, secondFriend.id);
       expect(deletedFriendship).toHaveProperty("id");
       expect(deletedFriendship.userAId).toBe(smallerId);
       expect(deletedFriendship.userBId).toBe(largerId);
       done();
     })
     .catch((err) => done(err));
+});
+
+test("Delete friend returns 404 if name not in friend list", (done) => {
+  request(app)
+    .delete(`/friend/${wrongId}`)
+    .set("Authorization", `Bearer ${firstFriend.token}`)
+    .type("form")
+    .send({ name: wrongName })
+    .expect(404)
+    .expect("Content-Type", /json/)
+    .expect({ message: "that user wasn't found" }, done);
 });

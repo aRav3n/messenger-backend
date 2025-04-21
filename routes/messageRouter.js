@@ -8,13 +8,13 @@ router.post(
   "/:friendId",
   middleware.verify,
   middleware.checkIfFriendExists,
-  controller.createNewMessageAndThread
+  controller.createNewMessage
 );
 router.get(
   "/friend/:friendId",
   middleware.verify,
   middleware.checkIfFriendExists,
-  controller.listThreadMessages
+  controller.listMessages
 );
 router.delete(
   "/:messageId",

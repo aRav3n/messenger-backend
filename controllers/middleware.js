@@ -4,11 +4,25 @@ const verify = security.verify;
 
 async function checkIfFriendExists(req, res, next) {
   const userId = Number(req.user.user.id);
-  const friendId = req.params.friendId;
-  const count = await db.countFriends(userId, friendId);
-  if (count === 0) {
+
+  const friendId = Number(req.params.friendId);
+  if (isNaN(friendId)) {
+    return res
+      .status(404)
+      .json({ message: "we need a friend ID to check that" });
+  }
+
+  const friend = await db.listUserById(friendId);
+  if (!friend) {
+    return res.status(404).json({ message: "that user wasn't found" });
+  }
+
+  const friendship = await db.getFriendship(userId, friendId);
+  if (!friendship) {
     return res.status(404).json({ message: "that friend wasn't found" });
   }
+
+  req.friendship = friendship;
   next();
 }
 

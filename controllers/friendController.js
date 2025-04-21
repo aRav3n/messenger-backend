@@ -14,6 +14,17 @@ async function createFriend(req, res) {
   }
   const userObject = req.user.user;
 
+  const existingFriendship = await db.getFriendship(
+    userObject.id,
+    friendObject.id
+  );
+
+  if (existingFriendship) {
+    return res
+      .status(409)
+      .json({ message: `a friendship with ${friendName} already exists` });
+  }
+
   const newFriendship = await db.addFriend(userObject.id, friendObject.id);
   if (!newFriendship) {
     if (newFriendship === false) {
@@ -28,11 +39,19 @@ async function createFriend(req, res) {
 }
 
 async function deleteFriend(req, res) {
-  const friendName = req.body.name;
-  const user = req.user.user;
-  const userName = user.name;
+  const friendship = req.friendship
+    ? req.friendship
+    : await (async () => {
+        const user = req.user.user;
+        const friend = await db.listUserByName(req.body.name);
+        if (!friend) {
+          return null;
+        }
+        const friendship = await db.getFriendship(user.id, friend.id);
+        return friendship;
+      })();
 
-  const deletedFriendship = await db.deleteFriend(friendName, userName);
+  const deletedFriendship = await db.deleteFriend(friendship.id);
   if (!deletedFriendship || deletedFriendship.length === 0) {
     return res.status(404).json({
       message: `Sorry, a friendship between ${userName} and ${friendName} was not found`,
@@ -42,15 +61,15 @@ async function deleteFriend(req, res) {
 }
 
 async function listFriends(req, res) {
-  const userName = req.params.userName;
-  if (!userName) {
-    return res.status(404).json({ message: "User name needed" });
+  const userId = Number(req.params.userId);
+  if (isNaN(userId)) {
+    return res.status(404).json({ message: "User ID needed" });
   }
-  const friendList = await db.listFriendsByUserName(userName);
+  const friendList = await db.listFriendsById(userId);
   if (!friendList || friendList.length === 0) {
     return res
       .status(404)
-      .json({ message: `No friendships found for user: ${userName}` });
+      .json({ message: `No friendships found for user with id of ${userId}` });
   }
   return res.status(200).json(friendList);
 }

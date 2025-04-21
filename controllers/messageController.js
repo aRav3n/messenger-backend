@@ -3,16 +3,12 @@ require("dotenv").config();
 const db = require("../db/queries");
 const security = require("./security");
 
-async function createMessageOnThread(req, res) {
-  const friendName = req.body.name;
-  const friendObject = await db.listUserByName(friendName);
-}
-
-async function createNewMessageAndThread(req, res) {
+async function createNewMessage(req, res) {
   const user = req.user.user;
   const senderId = user.id;
   const receiverId = Number(req.params.friendId);
-  
+  console.log(req.friendship);
+  return res.sendStatus(200);
 }
 
 async function deleteMessage(req, res) {
@@ -23,23 +19,12 @@ async function deleteMessage(req, res) {
   return res.status(200).json();
 }
 
-async function deleteMessagesAndThread(req, res) {
-  return;
-}
-
-async function listMessage(req, res) {
-  return;
-}
-
-async function listThreadMessages(req, res) {
-  return;
+async function listMessages(req, res) {
+  return res.sendStatus(200);
 }
 
 module.exports = {
-  createMessageOnThread,
-  createNewMessageAndThread,
+  createNewMessage,
+  listMessages,
   deleteMessage,
-  deleteMessagesAndThread,
-  listMessage,
-  listThreadMessages,
 };

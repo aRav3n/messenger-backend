@@ -19,6 +19,9 @@ const prisma = new PrismaClient({
 
 // internal use functions
 function getUserAAndUserB(userId: number, friendId: number) {
+  if (isNaN(userId) || isNaN(friendId)) {
+    return null;
+  }
   const userAId = Math.min(userId, friendId);
   const userBId = Math.max(userId, friendId);
   return { userAId, userBId };
@@ -45,6 +48,13 @@ async function deleteUser(id: number) {
   return deletedUser;
 }
 
+async function listUserById(id: number) {
+  const user = await prisma.user.findFirst({
+    where: { id },
+  });
+  return user;
+}
+
 async function listUserByName(name: string) {
   const userList = await prisma.user.findFirst({
     where: { name },
@@ -56,18 +66,21 @@ async function listUserByName(name: string) {
 // friend queries
 async function addFriend(userId: number, friendId: number) {
   const ids = getUserAAndUserB(userId, friendId);
+  if (!ids) {
+    console.log("Invalid user IDs provided");
+    return false; // Handle invalid input gracefully
+  }
+
   try {
     const newFriendship = await prisma.friendship.create({
-      data: ids,
+      data: {
+        userAId: ids.userAId,
+        userBId: ids.userBId,
+      },
     });
     return newFriendship;
   } catch (error) {
-    if (
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      error.code === "P2002"
-    ) {
+    if (error instanceof Error && "code" in error && error.code === "P2002") {
       return false;
     }
     console.error("Error adding friend:", error);
@@ -75,53 +88,51 @@ async function addFriend(userId: number, friendId: number) {
   }
 }
 
-async function countFriends(userId: number, friendId: number) {
+async function getFriendship(userId: number, friendId: number) {
+  if (!userId || !friendId) {
+    return null;
+  }
   const ids = getUserAAndUserB(userId, friendId);
-  const count = await prisma.friendship.count({
+  if (!ids) {
+    return null;
+  }
+  const friendship = await prisma.friendship.findFirst({
     where: ids,
   });
 
-  return count;
+  return friendship;
 }
 
-async function deleteFriend(friendName: string, userName: string) {
-  const friend = await listUserByName(friendName);
-  const user = await listUserByName(userName);
-  if (!friend || !user) {
-    return null;
-  }
-  const count = await countFriends(friend.id, user.id);
-  if (count === 0) {
-    return null;
-  }
-  const ids = getUserAAndUserB(user.id, friend.id);
+async function deleteFriend(friendshipId: number) {
   const deletedFriendship = await prisma.friendship.delete({
     where: {
-      userAId_userBId: ids,
+      id: friendshipId,
     },
   });
   return deletedFriendship;
 }
 
-async function listFriendsByUserName(name: string) {
-  return prisma.$queryRaw`
-    WITH target_user AS (
-      SELECT id FROM "User" WHERE name = ${name}
-    ),
-    friend_ids AS (
-      SELECT "userAId" AS friend_id 
-      FROM "Friendship" 
-      WHERE "userBId" = (SELECT id FROM target_user)
-      UNION
-      SELECT "userBId" AS friend_id 
-      FROM "Friendship" 
-      WHERE "userAId" = (SELECT id FROM target_user)
-    )
-    SELECT name 
-    FROM "User" 
-    WHERE id IN (SELECT friend_id FROM friend_ids)
-    ORDER BY name ASC
-  `;
+async function listFriendsById(id: number) {
+  const friendships = await prisma.friendship.findMany({
+    where: {
+      OR: [{ userAId: id }, { userBId: id }],
+    },
+    include: {
+      userA: { select: { id: true, name: true } },
+      userB: { select: { id: true, name: true } },
+    },
+  });
+
+  const friendArray = [];
+  for (let i = 0; i < friendships.length; i++) {
+    const nameToPush =
+      friendships[i].userAId === id
+        ? friendships[i].userB.name
+        : friendships[i].userA.name;
+    friendArray.push(nameToPush);
+  }
+
+  return friendArray;
 }
 
 // message queries
@@ -132,26 +143,19 @@ async function countMessages(id: number) {
   return count;
 }
 
-async function countThread(id: number) {
-  const count = await prisma.message.count({
-    where: { id },
-  });
-  return count;
-}
-
 export {
   // user queries
   addUser,
   deleteUser,
+  listUserById,
   listUserByName,
 
   // friend queries
   addFriend,
-  countFriends,
+  getFriendship,
   deleteFriend,
-  listFriendsByUserName,
+  listFriendsById,
 
   // message queries
   countMessages,
-  countThread,
 };
