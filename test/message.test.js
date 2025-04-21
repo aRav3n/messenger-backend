@@ -116,7 +116,7 @@ test("Create message works", (done) => {
 });
 
 // test list an existing friendship
-test("List message fails when not signed in", (done) => {
+test("List messages fails when not signed in", (done) => {
   request(app)
     .get(`/message/friend/${wrongId}`)
     .expect(401)
@@ -124,7 +124,7 @@ test("List message fails when not signed in", (done) => {
     .expect({ message: "you have to be logged in to do that" }, done);
 });
 
-test("List message fails when token has been altered", (done) => {
+test("List messages fails when token has been altered", (done) => {
   request(app)
     .get(`/message/friend/${wrongId}`)
     .set("Authorization", `Bearer ${badToken}`)
@@ -136,7 +136,7 @@ test("List message fails when token has been altered", (done) => {
     );
 });
 
-test("List message fails when friendship doesn't exist", (done) => {
+test("List messages fails when friendship doesn't exist", (done) => {
   request(app)
     .get(`/message/friend/${wrongId}`)
     .set("Authorization", `Bearer ${firstFriend.token}`)
@@ -145,7 +145,7 @@ test("List message fails when friendship doesn't exist", (done) => {
     .expect({ message: "that user wasn't found" }, done);
 });
 
-test("List message works", (done) => {
+test("List messages works", (done) => {
   request(app)
     .get(`/message/friend/${secondFriend.id}`)
     .set("Authorization", `Bearer ${firstFriend.token}`)
