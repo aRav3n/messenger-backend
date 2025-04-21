@@ -5,9 +5,7 @@ const express = require("express");
 const app = express();
 require("dotenv");
 
-const security = require("../controllers/security");
 const db = require("../db/queries");
-const { afterEach } = require("node:test");
 
 app.use(express.urlencoded({ extended: false }));
 app.use("/", router);

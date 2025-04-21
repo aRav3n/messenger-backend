@@ -166,6 +166,20 @@ async function countMessages(id: number) {
   return count;
 }
 
+async function deleteMessage(id: number) {
+  const deletedMessage = await prisma.message.delete({
+    where: { id },
+  });
+  return deletedMessage;
+}
+
+async function listMessages(friendshipId: number) {
+  const messages = await prisma.message.findMany({
+    where: { friendshipId },
+  });
+  return messages;
+}
+
 export {
   // test queries
   deleteAllUsers,
@@ -185,4 +199,6 @@ export {
   // message queries
   addMessage,
   countMessages,
+  deleteMessage,
+  listMessages,
 };

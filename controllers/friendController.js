@@ -1,7 +1,6 @@
 require("dotenv");
 
 const db = require("../db/queries");
-const security = require("./security");
 
 async function createFriend(req, res) {
   const friendName = req.body.name;

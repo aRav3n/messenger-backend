@@ -5,9 +5,7 @@ const express = require("express");
 const app = express();
 require("dotenv");
 
-const security = require("../controllers/security");
 const db = require("../db/queries");
-const { beforeEach } = require("node:test");
 
 app.use(express.urlencoded({ extended: false }));
 app.use("/", router);
@@ -15,7 +13,6 @@ app.use("/", router);
 const password = "123456";
 const firstFriend = { name: "Message Test User 1", password };
 const secondFriend = { name: "Message Test User 2", password };
-const wrongName = "Maximus Decimus Meridius";
 const wrongId = 0;
 const message = {
   to: secondFriend.name,
@@ -102,24 +99,21 @@ test("Create message on a friendship fails when friendship doesn't exist", (done
     .expect({ message: "that user wasn't found" }, done);
 });
 
-/*
 test("Create message works", (done) => {
   request(app)
     .post(`/message/${secondFriend.id}`)
     .set("Authorization", `Bearer ${firstFriend.token}`)
     .type("form")
     .send(message)
+    .expect(200)
     .then((res) => {
+      expect(res.body.senderId).toBe(firstFriend.id);
+      expect(res.body.receiverId).toBe(secondFriend.id);
+      expect(res.body.messageBody).toBe(message.message);
       messageResponse = res.body;
-      console.log({ messageResponse });
-      expect(messageResponse.senderId).toBe(firstFriend.id);
-      expect(messageResponse.receiverId).toBe(secondFriend.id);
-      expect(messageResponse.friendshipId).toExist();
-      expect(messageResponse.messageBody).toBe(message.message);
       done();
     });
 });
-*/
 
 // test list an existing friendship
 test("List message fails when not signed in", (done) => {
@@ -149,6 +143,19 @@ test("List message fails when friendship doesn't exist", (done) => {
     .expect(404)
     .expect("Content-Type", /json/)
     .expect({ message: "that user wasn't found" }, done);
+});
+
+test("List message works", (done) => {
+  request(app)
+    .get(`/message/friend/${secondFriend.id}`)
+    .set("Authorization", `Bearer ${firstFriend.token}`)
+    .expect(200)
+    .then((res) => {
+      expect(res.body[0].senderId).toBe(firstFriend.id);
+      expect(res.body[0].receiverId).toBe(secondFriend.id);
+      expect(res.body[0].messageBody).toBe(message.message);
+      done();
+    });
 });
 
 // test delete an existing message
@@ -186,4 +193,15 @@ test("Delete message fails when message doesn't exist", (done) => {
     .expect(404)
     .expect("Content-Type", /json/)
     .expect({ message: "that message wasn't found" }, done);
+});
+
+test("Delete message works", async () => {
+  const res = await request(app)
+    .delete(`/message/${messageResponse.id}`)
+    .set("Authorization", `Bearer ${firstFriend.token}`)
+    .expect(200);
+
+  expect(res.body.senderId).toBe(firstFriend.id);
+  expect(res.body.receiverId).toBe(secondFriend.id);
+  expect(res.body.messageBody).toBe(message.message);
 });

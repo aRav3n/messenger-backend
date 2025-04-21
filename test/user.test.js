@@ -6,7 +6,6 @@ const app = express();
 require("dotenv");
 
 const security = require("../controllers/security");
-const db = require("../db/queries");
 
 app.use(express.urlencoded({ extended: false }));
 app.use("/", router);

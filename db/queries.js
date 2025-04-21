@@ -20,6 +20,8 @@ exports.deleteFriend = deleteFriend;
 exports.listFriendsById = listFriendsById;
 exports.addMessage = addMessage;
 exports.countMessages = countMessages;
+exports.deleteMessage = deleteMessage;
+exports.listMessages = listMessages;
 const prisma_1 = require("../generated/prisma");
 const extension_accelerate_1 = require("@prisma/extension-accelerate");
 require("dotenv");
@@ -179,5 +181,21 @@ function countMessages(id) {
             where: { id },
         });
         return count;
+    });
+}
+function deleteMessage(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const deletedMessage = yield prisma.message.delete({
+            where: { id },
+        });
+        return deletedMessage;
+    });
+}
+function listMessages(friendshipId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const messages = yield prisma.message.findMany({
+            where: { friendshipId },
+        });
+        return messages;
     });
 }

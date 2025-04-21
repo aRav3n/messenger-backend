@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 require("dotenv");
-const query = require("../db/queries");
 
 const secretKey = process.env.SECRET_KEY;
 

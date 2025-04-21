@@ -8,7 +8,7 @@ async function checkIfFriendExists(req, res, next) {
   const friendId = Number(req.params.friendId);
   if (isNaN(friendId)) {
     return res
-      .status(404)
+      .status(400)
       .json({ message: "we need a friend ID to check that" });
   }
 
@@ -28,10 +28,14 @@ async function checkIfFriendExists(req, res, next) {
 
 async function checkIfMessageExists(req, res, next) {
   const id = Number(req.params.messageId);
+  if (isNaN(id)) {
+    return res.status(400).json({ message: "no message ID was provided" });
+  }
   const count = await db.countMessages(id);
   if (count === 0) {
     return res.status(404).json({ message: "that message wasn't found" });
   }
+  req.messageId = id;
   next();
 }
 
