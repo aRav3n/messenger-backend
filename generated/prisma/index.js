@@ -165,11 +165,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://andy:littleann@localhost:5432/messenger_test"
+        "value": null
       }
     }
   },
