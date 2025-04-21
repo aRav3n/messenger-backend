@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteAllUsers = deleteAllUsers;
 exports.addUser = addUser;
 exports.deleteUser = deleteUser;
 exports.listUserById = listUserById;
@@ -17,6 +18,7 @@ exports.addFriend = addFriend;
 exports.getFriendship = getFriendship;
 exports.deleteFriend = deleteFriend;
 exports.listFriendsById = listFriendsById;
+exports.addMessage = addMessage;
 exports.countMessages = countMessages;
 const prisma_1 = require("../generated/prisma");
 const extension_accelerate_1 = require("@prisma/extension-accelerate");
@@ -41,6 +43,12 @@ function getUserAAndUserB(userId, friendId) {
     const userAId = Math.min(userId, friendId);
     const userBId = Math.max(userId, friendId);
     return { userAId, userBId };
+}
+// test only functions
+function deleteAllUsers() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield prisma.user.deleteMany({});
+    });
 }
 // user queries
 function addUser(name, hash) {
@@ -152,6 +160,19 @@ function listFriendsById(id) {
     });
 }
 // message queries
+function addMessage(senderId, receiverId, friendshipId, messageBody) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const dbMessage = yield prisma.message.create({
+            data: {
+                senderId,
+                receiverId,
+                friendshipId,
+                messageBody,
+            },
+        });
+        return dbMessage;
+    });
+}
 function countMessages(id) {
     return __awaiter(this, void 0, void 0, function* () {
         const count = yield prisma.message.count({

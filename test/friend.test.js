@@ -6,25 +6,29 @@ const app = express();
 require("dotenv");
 
 const security = require("../controllers/security");
+const db = require("../db/queries");
+const { afterEach } = require("node:test");
 
 app.use(express.urlencoded({ extended: false }));
 app.use("/", router);
 
 const password = "123456";
-const firstFriend = { name: "User 1", password };
-const secondFriend = { name: "User 2", password };
+const firstFriend = { name: "Friend Test User 1", password };
+const secondFriend = { name: "Friend Test User 2", password };
 const wrongName = "Maximus Decimus Meridius";
 const wrongId = 0;
 
 // create firstFriend and secondFriend
 beforeAll(async () => {
   async function createUserAccount(userObject) {
-    const res = await request(app)
+    await request(app)
       .post("/user/signup")
       .type("form")
-      .send({ confirmPassword: password, ...userObject });
-    const user = res.body;
-    userObject.id = user.id;
+      .send({ confirmPassword: password, ...userObject })
+      .then((res) => {
+        const user = res.body;
+        userObject.id = user.id;
+      });
   }
 
   async function logUserIn(userObject) {
@@ -43,18 +47,13 @@ beforeAll(async () => {
 
 // delete firstFriend and secondFriend
 afterAll(async () => {
-  async function deleteUser(userObject) {
-    const user = await security.listUserDataFromToken(userObject.token);
-    await request(app)
-      .delete(`/user/${user.user.id}/delete`)
-      .set("Authorization", `Bearer ${userObject.token}`)
-      .expect(200);
-    userObject.id = null;
-    userObject.token = null;
-  }
-
-  await deleteUser(firstFriend);
-  await deleteUser(secondFriend);
+  firstFriend.id ? await db.deleteUser(firstFriend.id) : null;
+  secondFriend.id ? await db.deleteUser(secondFriend.id) : null;
+  firstFriend.id = null;
+  firstFriend.token = null;
+  secondFriend.id = null;
+  secondFriend.token = null;
+  await db.deleteAllUsers();
 });
 
 test("Adding friend route fails when not logged in", (done) => {
@@ -85,12 +84,9 @@ test("Adding friend by username works", (done) => {
     .set("Authorization", `Bearer ${firstFriend.token}`)
     .type("form")
     .send({ name: secondFriend.name })
-    .expect(200)
     .expect("Content-Type", /json/)
-    .expect(
-      { message: `New friendship with ${secondFriend.name} added!` },
-      done
-    );
+    .expect({ message: `New friendship with ${secondFriend.name} added!` })
+    .expect(200, done);
 });
 
 test("Adding duplicate friendship fails", (done) => {
@@ -99,7 +95,14 @@ test("Adding duplicate friendship fails", (done) => {
     .set("Authorization", `Bearer ${firstFriend.token}`)
     .type("form")
     .send({ name: secondFriend.name })
-    .expect(409, done);
+    .then(() => {
+      request(app)
+        .post("/friend")
+        .set("Authorization", `Bearer ${firstFriend.token}`)
+        .type("form")
+        .send({ name: secondFriend.name })
+        .expect(409, done);
+    });
 });
 
 test("List friends fails with nonexistent user ID", (done) => {
@@ -116,9 +119,9 @@ test("List friends fails with nonexistent user ID", (done) => {
 test("List friends given a user ID works", (done) => {
   request(app)
     .get(`/friend/${firstFriend.id}`)
-    .expect(200)
     .expect("Content-Type", /json/)
-    .expect([secondFriend.name], done);
+    .expect([secondFriend.name])
+    .expect(200, done);
 });
 
 test("Delete friend fails when not signed in", (done) => {

@@ -6,18 +6,19 @@ const app = express();
 require("dotenv");
 
 const security = require("../controllers/security");
+const db = require("../db/queries");
 
 app.use(express.urlencoded({ extended: false }));
 app.use("/", router);
 
 const testUserCreation = {
-  name: "Test User",
+  name: "User Test User",
   password: "123456",
   confirmPassword: "123456",
 };
 
 const testUserLogin = {
-  name: "Test User",
+  name: "User Test User",
   password: "123456",
 };
 

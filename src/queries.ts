@@ -27,6 +27,11 @@ function getUserAAndUserB(userId: number, friendId: number) {
   return { userAId, userBId };
 }
 
+// test only functions
+async function deleteAllUsers() {
+  await prisma.user.deleteMany({});
+}
+
 // user queries
 async function addUser(name: string, hash: string) {
   const user = await prisma.user.create({
@@ -136,6 +141,24 @@ async function listFriendsById(id: number) {
 }
 
 // message queries
+async function addMessage(
+  senderId: number,
+  receiverId: number,
+  friendshipId: number,
+  messageBody: string
+) {
+  const dbMessage = await prisma.message.create({
+    data: {
+      senderId,
+      receiverId,
+      friendshipId,
+      messageBody,
+    },
+  });
+
+  return dbMessage;
+}
+
 async function countMessages(id: number) {
   const count = await prisma.message.count({
     where: { id },
@@ -144,6 +167,9 @@ async function countMessages(id: number) {
 }
 
 export {
+  // test queries
+  deleteAllUsers,
+
   // user queries
   addUser,
   deleteUser,
@@ -157,5 +183,6 @@ export {
   listFriendsById,
 
   // message queries
+  addMessage,
   countMessages,
 };

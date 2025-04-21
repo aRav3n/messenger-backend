@@ -6,13 +6,15 @@ const app = express();
 require("dotenv");
 
 const security = require("../controllers/security");
+const db = require("../db/queries");
+const { beforeEach } = require("node:test");
 
 app.use(express.urlencoded({ extended: false }));
 app.use("/", router);
 
 const password = "123456";
-const firstFriend = { name: "User 1", password };
-const secondFriend = { name: "User 2", password };
+const firstFriend = { name: "Message Test User 1", password };
+const secondFriend = { name: "Message Test User 2", password };
 const wrongName = "Maximus Decimus Meridius";
 const wrongId = 0;
 const message = {
@@ -20,7 +22,7 @@ const message = {
   message: "Hi there, this is a message!",
 };
 let badToken;
-let threadId;
+let messageResponse;
 
 // create two users
 beforeAll(async () => {
@@ -60,22 +62,14 @@ beforeAll(async () => {
   await createFriendship(firstFriend, secondFriend);
 });
 
-// delete both users
+// delete firstFriend and secondFriend
 afterAll(async () => {
-  async function deleteUser(userObject) {
-    const user = await security.listUserDataFromToken(userObject.token);
-    const token = userObject.token;
-    const userId = user.user.id;
-    await request(app)
-      .delete(`/user/${userId}/delete`)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(200);
-    userObject.id = null;
-    userObject.token = null;
-  }
-
-  await deleteUser(firstFriend);
-  await deleteUser(secondFriend);
+  firstFriend.id ? await db.deleteUser(firstFriend.id) : null;
+  secondFriend.id ? await db.deleteUser(secondFriend.id) : null;
+  firstFriend.id = null;
+  firstFriend.token = null;
+  secondFriend.id = null;
+  secondFriend.token = null;
 });
 
 // test creating a message on an existing friendship
@@ -116,9 +110,14 @@ test("Create message works", (done) => {
     .type("form")
     .send(message)
     .then((res) => {
-      const body = res.body;
-      console.log("body:", body);
-    }, done);
+      messageResponse = res.body;
+      console.log({ messageResponse });
+      expect(messageResponse.senderId).toBe(firstFriend.id);
+      expect(messageResponse.receiverId).toBe(secondFriend.id);
+      expect(messageResponse.friendshipId).toExist();
+      expect(messageResponse.messageBody).toBe(message.message);
+      done();
+    });
 });
 */
 

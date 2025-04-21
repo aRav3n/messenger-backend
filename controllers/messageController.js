@@ -7,8 +7,15 @@ async function createNewMessage(req, res) {
   const user = req.user.user;
   const senderId = user.id;
   const receiverId = Number(req.params.friendId);
-  console.log(req.friendship);
-  return res.sendStatus(200);
+  const friendship = await db.getFriendship(senderId, receiverId);
+  const message = await db.addMessage(
+    senderId,
+    receiverId,
+    friendship.id,
+    req.body.message
+  );
+
+  return res.status(200).json(message);
 }
 
 async function deleteMessage(req, res) {

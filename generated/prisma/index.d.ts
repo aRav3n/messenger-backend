@@ -3444,6 +3444,7 @@ export namespace Prisma {
     senderId: number | null
     receiverId: number | null
     friendshipId: number | null
+    messageBody: string | null
   }
 
   export type MessageMaxAggregateOutputType = {
@@ -3451,6 +3452,7 @@ export namespace Prisma {
     senderId: number | null
     receiverId: number | null
     friendshipId: number | null
+    messageBody: string | null
   }
 
   export type MessageCountAggregateOutputType = {
@@ -3458,6 +3460,7 @@ export namespace Prisma {
     senderId: number
     receiverId: number
     friendshipId: number
+    messageBody: number
     _all: number
   }
 
@@ -3481,6 +3484,7 @@ export namespace Prisma {
     senderId?: true
     receiverId?: true
     friendshipId?: true
+    messageBody?: true
   }
 
   export type MessageMaxAggregateInputType = {
@@ -3488,6 +3492,7 @@ export namespace Prisma {
     senderId?: true
     receiverId?: true
     friendshipId?: true
+    messageBody?: true
   }
 
   export type MessageCountAggregateInputType = {
@@ -3495,6 +3500,7 @@ export namespace Prisma {
     senderId?: true
     receiverId?: true
     friendshipId?: true
+    messageBody?: true
     _all?: true
   }
 
@@ -3589,6 +3595,7 @@ export namespace Prisma {
     senderId: number
     receiverId: number
     friendshipId: number
+    messageBody: string
     _count: MessageCountAggregateOutputType | null
     _avg: MessageAvgAggregateOutputType | null
     _sum: MessageSumAggregateOutputType | null
@@ -3615,6 +3622,7 @@ export namespace Prisma {
     senderId?: boolean
     receiverId?: boolean
     friendshipId?: boolean
+    messageBody?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
     friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
@@ -3625,6 +3633,7 @@ export namespace Prisma {
     senderId?: boolean
     receiverId?: boolean
     friendshipId?: boolean
+    messageBody?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
     friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
@@ -3635,6 +3644,7 @@ export namespace Prisma {
     senderId?: boolean
     receiverId?: boolean
     friendshipId?: boolean
+    messageBody?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
     friendship?: boolean | FriendshipDefaultArgs<ExtArgs>
@@ -3645,9 +3655,10 @@ export namespace Prisma {
     senderId?: boolean
     receiverId?: boolean
     friendshipId?: boolean
+    messageBody?: boolean
   }
 
-  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "senderId" | "receiverId" | "friendshipId", ExtArgs["result"]["message"]>
+  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "senderId" | "receiverId" | "friendshipId" | "messageBody", ExtArgs["result"]["message"]>
   export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
@@ -3676,6 +3687,7 @@ export namespace Prisma {
       senderId: number
       receiverId: number
       friendshipId: number
+      messageBody: string
     }, ExtArgs["result"]["message"]>
     composites: {}
   }
@@ -4106,6 +4118,7 @@ export namespace Prisma {
     readonly senderId: FieldRef<"Message", 'Int'>
     readonly receiverId: FieldRef<"Message", 'Int'>
     readonly friendshipId: FieldRef<"Message", 'Int'>
+    readonly messageBody: FieldRef<"Message", 'String'>
   }
     
 
@@ -4556,7 +4569,8 @@ export namespace Prisma {
     id: 'id',
     senderId: 'senderId',
     receiverId: 'receiverId',
-    friendshipId: 'friendshipId'
+    friendshipId: 'friendshipId',
+    messageBody: 'messageBody'
   };
 
   export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
@@ -4746,6 +4760,7 @@ export namespace Prisma {
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
     friendshipId?: IntFilter<"Message"> | number
+    messageBody?: StringFilter<"Message"> | string
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
     friendship?: XOR<FriendshipScalarRelationFilter, FriendshipWhereInput>
@@ -4756,6 +4771,7 @@ export namespace Prisma {
     senderId?: SortOrder
     receiverId?: SortOrder
     friendshipId?: SortOrder
+    messageBody?: SortOrder
     sender?: UserOrderByWithRelationInput
     receiver?: UserOrderByWithRelationInput
     friendship?: FriendshipOrderByWithRelationInput
@@ -4769,6 +4785,7 @@ export namespace Prisma {
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
     friendshipId?: IntFilter<"Message"> | number
+    messageBody?: StringFilter<"Message"> | string
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
     friendship?: XOR<FriendshipScalarRelationFilter, FriendshipWhereInput>
@@ -4779,6 +4796,7 @@ export namespace Prisma {
     senderId?: SortOrder
     receiverId?: SortOrder
     friendshipId?: SortOrder
+    messageBody?: SortOrder
     _count?: MessageCountOrderByAggregateInput
     _avg?: MessageAvgOrderByAggregateInput
     _max?: MessageMaxOrderByAggregateInput
@@ -4794,6 +4812,7 @@ export namespace Prisma {
     senderId?: IntWithAggregatesFilter<"Message"> | number
     receiverId?: IntWithAggregatesFilter<"Message"> | number
     friendshipId?: IntWithAggregatesFilter<"Message"> | number
+    messageBody?: StringWithAggregatesFilter<"Message"> | string
   }
 
   export type UserCreateInput = {
@@ -4894,6 +4913,7 @@ export namespace Prisma {
   }
 
   export type MessageCreateInput = {
+    messageBody: string
     sender: UserCreateNestedOneWithoutSentMessagesInput
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
     friendship: FriendshipCreateNestedOneWithoutMessageInput
@@ -4904,9 +4924,11 @@ export namespace Prisma {
     senderId: number
     receiverId: number
     friendshipId: number
+    messageBody: string
   }
 
   export type MessageUpdateInput = {
+    messageBody?: StringFieldUpdateOperationsInput | string
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
     friendship?: FriendshipUpdateOneRequiredWithoutMessageNestedInput
@@ -4917,6 +4939,7 @@ export namespace Prisma {
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
     friendshipId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageCreateManyInput = {
@@ -4924,10 +4947,11 @@ export namespace Prisma {
     senderId: number
     receiverId: number
     friendshipId: number
+    messageBody: string
   }
 
   export type MessageUpdateManyMutationInput = {
-
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyInput = {
@@ -4935,6 +4959,7 @@ export namespace Prisma {
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
     friendshipId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -5093,6 +5118,7 @@ export namespace Prisma {
     senderId?: SortOrder
     receiverId?: SortOrder
     friendshipId?: SortOrder
+    messageBody?: SortOrder
   }
 
   export type MessageAvgOrderByAggregateInput = {
@@ -5107,6 +5133,7 @@ export namespace Prisma {
     senderId?: SortOrder
     receiverId?: SortOrder
     friendshipId?: SortOrder
+    messageBody?: SortOrder
   }
 
   export type MessageMinOrderByAggregateInput = {
@@ -5114,6 +5141,7 @@ export namespace Prisma {
     senderId?: SortOrder
     receiverId?: SortOrder
     friendshipId?: SortOrder
+    messageBody?: SortOrder
   }
 
   export type MessageSumOrderByAggregateInput = {
@@ -5527,6 +5555,7 @@ export namespace Prisma {
   }
 
   export type MessageCreateWithoutSenderInput = {
+    messageBody: string
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
     friendship: FriendshipCreateNestedOneWithoutMessageInput
   }
@@ -5535,6 +5564,7 @@ export namespace Prisma {
     id?: number
     receiverId: number
     friendshipId: number
+    messageBody: string
   }
 
   export type MessageCreateOrConnectWithoutSenderInput = {
@@ -5548,6 +5578,7 @@ export namespace Prisma {
   }
 
   export type MessageCreateWithoutReceiverInput = {
+    messageBody: string
     sender: UserCreateNestedOneWithoutSentMessagesInput
     friendship: FriendshipCreateNestedOneWithoutMessageInput
   }
@@ -5556,6 +5587,7 @@ export namespace Prisma {
     id?: number
     senderId: number
     friendshipId: number
+    messageBody: string
   }
 
   export type MessageCreateOrConnectWithoutReceiverInput = {
@@ -5633,6 +5665,7 @@ export namespace Prisma {
     senderId?: IntFilter<"Message"> | number
     receiverId?: IntFilter<"Message"> | number
     friendshipId?: IntFilter<"Message"> | number
+    messageBody?: StringFilter<"Message"> | string
   }
 
   export type MessageUpsertWithWhereUniqueWithoutReceiverInput = {
@@ -5696,6 +5729,7 @@ export namespace Prisma {
   }
 
   export type MessageCreateWithoutFriendshipInput = {
+    messageBody: string
     sender: UserCreateNestedOneWithoutSentMessagesInput
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
   }
@@ -5704,6 +5738,7 @@ export namespace Prisma {
     id?: number
     senderId: number
     receiverId: number
+    messageBody: string
   }
 
   export type MessageCreateOrConnectWithoutFriendshipInput = {
@@ -5940,12 +5975,14 @@ export namespace Prisma {
     id?: number
     receiverId: number
     friendshipId: number
+    messageBody: string
   }
 
   export type MessageCreateManyReceiverInput = {
     id?: number
     senderId: number
     friendshipId: number
+    messageBody: string
   }
 
   export type FriendshipUpdateWithoutUserAInput = {
@@ -5981,6 +6018,7 @@ export namespace Prisma {
   }
 
   export type MessageUpdateWithoutSenderInput = {
+    messageBody?: StringFieldUpdateOperationsInput | string
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
     friendship?: FriendshipUpdateOneRequiredWithoutMessageNestedInput
   }
@@ -5989,15 +6027,18 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
     friendshipId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyWithoutSenderInput = {
     id?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
     friendshipId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUpdateWithoutReceiverInput = {
+    messageBody?: StringFieldUpdateOperationsInput | string
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
     friendship?: FriendshipUpdateOneRequiredWithoutMessageNestedInput
   }
@@ -6006,21 +6047,25 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     friendshipId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyWithoutReceiverInput = {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     friendshipId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageCreateManyFriendshipInput = {
     id?: number
     senderId: number
     receiverId: number
+    messageBody: string
   }
 
   export type MessageUpdateWithoutFriendshipInput = {
+    messageBody?: StringFieldUpdateOperationsInput | string
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
   }
@@ -6029,12 +6074,14 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyWithoutFriendshipInput = {
     id?: IntFieldUpdateOperationsInput | number
     senderId?: IntFieldUpdateOperationsInput | number
     receiverId?: IntFieldUpdateOperationsInput | number
+    messageBody?: StringFieldUpdateOperationsInput | string
   }
 
 

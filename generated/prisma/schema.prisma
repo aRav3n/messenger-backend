@@ -43,4 +43,5 @@ model Message {
   receiverId   Int
   friendship   Friendship @relation(fields: [friendshipId], references: [id], onDelete: Cascade)
   friendshipId Int
+  messageBody  String
 }
