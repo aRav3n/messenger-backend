@@ -49,6 +49,8 @@ test("Login route works", (done) => {
       const token = res.body.token;
       expect(token).toBeDefined();
       expect(typeof token).toBe("string");
+      expect(res.body.name).toBe(testUserLogin.name);
+      expect(typeof res.body.id).toBe("number");
 
       // Check that token looks like a JWT (three segments separated by dots)
       expect(token.split(".")).toHaveLength(3);

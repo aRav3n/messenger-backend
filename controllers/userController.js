@@ -88,19 +88,24 @@ const logUserIn = [
   async (req, res) => {
     const password = req.body.password;
     const name = req.body.name;
+
     const dbUser = await db.listUserByName(name);
     if (!dbUser) {
       return res
         .status(404)
         .json({ message: `No user with the name ${name} was found` });
     }
-    const hash = dbUser.hash;
-    const passwordIsValid = bcrypt.compareSync(password, hash);
+
+    const passwordIsValid = bcrypt.compareSync(password, dbUser.hash);
     if (!passwordIsValid) {
       return res.status(401).json({ message: "That password is not valid" });
     }
+
     const token = await security.sign(dbUser);
-    return res.status(200).json({ token });
+    const { hash, ...user } = dbUser;
+    user.token = token;
+
+    return res.status(200).json(user);
   },
 ];
 
