@@ -2,15 +2,27 @@
 
 ### Available routes:
 
-- "POST" /user/signup [^1]
-- "POST" /user/login [^2]
-- "DELETE" /user/:userId/delete [^3]
-- "POST" /friend [^4]
-- "GET" /friend/:userId [^5]
-- "DELETE" /friend/friendId [^6]
-- "POST" /message/:friendId [^7]
-- "GET" /message/friend/:friendId [^8]
-- "DELETE" /message/:messageID
+- User Routes
+  - Sign up
+    - **POST** /user/signup [^1]
+  - Log in
+    - **POST** /user/login [^2]
+  - Delete account
+    - **DELETE** /user/:userId/delete [^3]
+- Friend Routes
+  - Add friend
+    - **POST** /friend [^4]
+  - List friends
+    - **GET** /friend/:userId [^5]
+  - Delete friend
+    - **DELETE** /friend/friendId [^6]
+- Message Routes
+  - Send a message
+    - **POST** /message/:friendId [^7]
+  - List message thread for a friendship
+    - **GET** /message/friend/:friendId [^8]
+  - Delete a message
+    - **DELETE** /message/:messageID
 
 **Route Notes**
 [^1]: Expects { name, password, confirmPassword }. Returns { id, name, hash }.
