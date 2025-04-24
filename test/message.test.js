@@ -48,9 +48,7 @@ beforeAll(async () => {
       .set("Authorization", `Bearer ${user.token}`)
       .type("form")
       .send({ name: friend.name })
-      .expect(200)
-      .expect("Content-Type", /json/)
-      .expect({ message: `New friendship with ${friend.name} added!` });
+      .expect(200);
   }
 
   await logUserIn(firstFriend);

@@ -83,8 +83,14 @@ test("Adding friend by username works", (done) => {
     .type("form")
     .send({ name: secondFriend.name })
     .expect("Content-Type", /json/)
-    .expect({ message: `New friendship with ${secondFriend.name} added!` })
-    .expect(200, done);
+    .expect(200)
+    .then((res) => {
+      const friendship = res.body;
+      expect(friendship).toHaveProperty("id");
+      expect(friendship).toHaveProperty("userAId");
+      expect(friendship).toHaveProperty("userBId");
+      done();
+    });
 });
 
 test("Adding duplicate friendship fails", (done) => {

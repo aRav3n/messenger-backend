@@ -32,9 +32,7 @@ async function createFriend(req, res) {
     return res.sendStatus(500);
   }
 
-  return res
-    .status(200)
-    .json({ message: `New friendship with ${friendName} added!` });
+  return res.status(200).json(newFriendship);
 }
 
 async function deleteFriend(req, res) {
@@ -66,11 +64,9 @@ async function listFriends(req, res) {
   }
   const friendList = await db.listFriendsById(userId);
   if (!friendList) {
-    return res
-      .status(404)
-      .json({
-        message: `Error finding friendships for user with id of ${userId}`,
-      });
+    return res.status(404).json({
+      message: `Error finding friendships for user with id of ${userId}`,
+    });
   }
   return res.status(200).json(friendList);
 }
