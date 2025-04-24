@@ -49,10 +49,10 @@ const createUser = [
       }
       return res
         .status(409)
-        .json({ errors: ["a user with this name already exists"] });
+        .json({ message: "a user with this name already exists" });
     } catch (err) {
       console.error(err);
-      return res.status(500).json({ errors: ["Server error"] });
+      return res.status(500).json({ message: "server error" });
     }
   },
 ];
