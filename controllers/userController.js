@@ -29,7 +29,7 @@ const createUser = [
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
+        return res.status(422).json({ message: errors.errors[0].msg });
       }
 
       // verify that the name is unique
