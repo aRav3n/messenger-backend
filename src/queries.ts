@@ -130,11 +130,11 @@ async function listFriendsById(id: number) {
 
   const friendArray = [];
   for (let i = 0; i < friendships.length; i++) {
-    const nameToPush =
+    const userToPush =
       friendships[i].userAId === id
-        ? friendships[i].userB.name
-        : friendships[i].userA.name;
-    friendArray.push(nameToPush);
+        ? { name: friendships[i].userB.name, id: friendships[i].userB.id }
+        : { name: friendships[i].userA.name, id: friendships[i].userA.id };
+    friendArray.push(userToPush);
   }
 
   return friendArray;

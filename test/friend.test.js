@@ -121,8 +121,13 @@ test("List friends given a user ID works", (done) => {
   request(app)
     .get(`/friend/${firstFriend.id}`)
     .expect("Content-Type", /json/)
-    .expect([secondFriend.name])
-    .expect(200, done);
+    .expect(200)
+    .then((res) => {
+      const friend = res.body[0];
+      expect(friend.name).toBe(secondFriend.name);
+      expect(friend.id).toBeDefined();
+      done();
+    });
 });
 
 test("Delete friend fails when not signed in", (done) => {
