@@ -147,6 +147,10 @@ const config = {
         "fromEnvVar": null,
         "value": "darwin-arm64",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -164,16 +168,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://neondb_owner:npg_iIe6fHcD3pJr@ep-dry-lake-a4h4k26k-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id               Int          @id @default(autoincrement())\n  name             String\n  hash             String\n  friendshipsA     Friendship[] @relation(\"FriendshipA\")\n  friendshipsB     Friendship[] @relation(\"FriendshipB\")\n  sentMessages     Message[]    @relation(\"SentMessages\")\n  receivedMessages Message[]    @relation(\"ReceivedMessages\")\n}\n\nmodel Friendship {\n  id      Int       @id @default(autoincrement())\n  userA   User      @relation(\"FriendshipA\", fields: [userAId], references: [id], onDelete: Cascade)\n  userAId Int\n  userB   User      @relation(\"FriendshipB\", fields: [userBId], references: [id], onDelete: Cascade)\n  userBId Int\n  Message Message[]\n\n  @@unique([userAId, userBId])\n}\n\nmodel Message {\n  id           Int        @id @default(autoincrement())\n  sender       User       @relation(\"SentMessages\", fields: [senderId], references: [id], onDelete: Cascade)\n  senderId     Int\n  receiver     User       @relation(\"ReceivedMessages\", fields: [receiverId], references: [id], onDelete: Cascade)\n  receiverId   Int\n  friendship   Friendship @relation(fields: [friendshipId], references: [id], onDelete: Cascade)\n  friendshipId Int\n  messageBody  String\n}\n",
-  "inlineSchemaHash": "a7c141f7605f18ffa97480dde03473fba1f3aaa7cac0ae904d0f9816fb91aba5",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n  output        = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id               Int          @id @default(autoincrement())\n  name             String\n  hash             String\n  friendshipsA     Friendship[] @relation(\"FriendshipA\")\n  friendshipsB     Friendship[] @relation(\"FriendshipB\")\n  sentMessages     Message[]    @relation(\"SentMessages\")\n  receivedMessages Message[]    @relation(\"ReceivedMessages\")\n}\n\nmodel Friendship {\n  id      Int       @id @default(autoincrement())\n  userA   User      @relation(\"FriendshipA\", fields: [userAId], references: [id], onDelete: Cascade)\n  userAId Int\n  userB   User      @relation(\"FriendshipB\", fields: [userBId], references: [id], onDelete: Cascade)\n  userBId Int\n  Message Message[]\n\n  @@unique([userAId, userBId])\n}\n\nmodel Message {\n  id           Int        @id @default(autoincrement())\n  sender       User       @relation(\"SentMessages\", fields: [senderId], references: [id], onDelete: Cascade)\n  senderId     Int\n  receiver     User       @relation(\"ReceivedMessages\", fields: [receiverId], references: [id], onDelete: Cascade)\n  receiverId   Int\n  friendship   Friendship @relation(fields: [friendshipId], references: [id], onDelete: Cascade)\n  friendshipId Int\n  messageBody  String\n}\n",
+  "inlineSchemaHash": "1670fdfc35fb4c84ae2806f313cb66bd2b0b6f6348f60ada69ce0cb0181761d5",
   "copyEngine": true
 }
 config.dirname = '/'
