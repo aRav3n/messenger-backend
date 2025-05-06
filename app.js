@@ -4,7 +4,8 @@ const router = require("./routes/router");
 const cors = require("cors");
 
 const allowList = [
-  "http://localhost:5173/"
+  "http://localhost:5173/",
+  "https://messenger-frontend-top.pages.dev/",
 ];
 const corsOptions = {
   origin: allowList,
