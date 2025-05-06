@@ -1,5 +1,9 @@
 # Messenger Project Backend for [The Odin Project](https://www.theodinproject.com)
 
+## Links
+- [Frontend Repo](https://github.com/aRav3n/messenger_frontend_TOP)
+- [API base URL](https://messenger-backend-top.onrender.com)
+
 ### Available routes:
 
 - User Routes
