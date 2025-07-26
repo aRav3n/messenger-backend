@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Description](#description)
+- [Installation Instructions](#installation-instructions)
 - [Usage and Screenshots](#usage-and-screenshots)
 - [Technologies Used](#technologies-used)
 - [Dependencies and Credits](#dependencies-and-credits)
@@ -10,7 +11,39 @@
 
 ## Description
 
-This is the RESTful API created for my messenger app as a part of [The Odin Project](https://www.theodinproject.com) curriculum (Full Stack JavaScript track)
+This is the RESTful API created for my messenger app as a part of [The Odin Project](https://www.theodinproject.com) curriculum (Full Stack JavaScript track). It is built using Node.js and Express with a PostgreSQL database managed using Prisma ORM.
+
+## Installation Instructions
+
+1. Clone or fork this repo
+2. cd into the project root directory (where the README.md file is located)
+3. Run the following in your terminal
+    - ``` bash
+      npm init -y
+ 
+      npm install @prisma/client @prisma/extension-accelerate bcryptjs
+      npm install cors dotenv express
+      npm install express-validator jsonwebtoken pg
+ 
+      npm install @types/node jest prisma --save-dev
+      npm install supertest tsx typescript --save-dev
+      ```
+1. Create a .env file 
+   - ``` bash
+     NODE_ENV=development
+     TEST_DATABASE_URL="your_local_test_database_url"
+     DATABASE_URL="your_local_database_url"
+     SECRET_KEY="your_secret_key"
+     PORT=3000 (or any 4 digit even integer)
+     ```
+1. ``` bash
+   npm run dev
+   ```
+   - `^` + `c` will end the process 
+1. After making updates to ./src/queries.ts you'll want to run this to recompile queries.js 
+   - ``` bash
+     npx tsc
+     ```
 
 ## Usage and Screenshots
 
